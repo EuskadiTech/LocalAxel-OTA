@@ -24,4 +24,4 @@ def ota_updater():
     print("Updating Files")
     for file in FILES:
         print("Updating", file)
-        ota_file("static/" + file)
+        ota_file("OTA_Files/" + file)
