@@ -1,0 +1,24 @@
+START_PAGE~NAVBAR~
+<div class="container" style="padding-top: 60px;">
+    <h1>Menu Comedor</h1>
+    <h2>Hoy</h2>
+    <b>~MENU_COMEDOR_HOY~</b>
+    <h2>Mantenimiento</h2>
+    <b>En el primer dia del mes: </b>
+    Si no ves los datos de este mes (o en servidores 24/7): Haz click en <a href="/admin/recargar_menu"
+        class="btn btn-warning btn-sm">Recargar
+        Comedor</a> para descargar el menú desde EuskadiTech
+    <h2>Este mes</h2>
+    <table class="table table-hover">
+        <thead>
+            <tr class="table-success">
+                <th scope="col">Dia</th>
+                <th scope="col">Menu</th>
+            </tr>
+        </thead>
+        <tbody>
+            ~MENU_COMEDOR_TABLA~
+        </tbody>
+    </table>
+</div>
+~END_PAGE

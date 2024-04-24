@@ -1,0 +1,49 @@
+from htmlmin import minify
+from os import path
+import glob
+
+LANG = "ES"
+
+TEMPLATES = [
+    "aula/-/alumnos.html",
+    "aula/-/alumnos/new.html",
+    "aula/-/alumnos/-.html",
+    "aula/-/menu-comedor.html",
+    "START-PAGE.html",
+    "END-PAGE.html",
+    "NAVBAR.html",
+]
+STATIC_FILES = [
+    "static__fonts__icomoon.eot",
+    "static__fonts__icomoon.svg",
+    "static__fonts__icomoon.ttf",
+    "static__fonts__icomoon.woff",
+    "static__icons__512x512.png",
+    "static__icons__favicon.ico",
+    "static__img__logo.png",
+    "static__img__bgpattern.jpg",
+]
+
+
+def get_template(file: str) -> str:
+    with open(path.join("src/input/", file), "r") as f:
+        contents = f.read()
+        return minify(contents, remove_comments=True, reduce_boolean_attributes=True)
+
+
+def build() -> dict:
+    output = {}
+    for template in TEMPLATES:
+        output[template] = get_template(template)
+    return output
+
+
+def dump(result: dict) -> None:
+    with open(f"../OTA/LocalAxel/{LANG}/templates.py", "w") as f:
+        f.write("TEMPLATES = " + str(result) + "\n")
+        f.write("FILES = " + str(STATIC_FILES) + "\n")
+    return
+
+
+if __name__ == "__main__":
+    dump(build())

@@ -1,0 +1,31 @@
+START_PAGE~NAVBAR~
+<div class="container" style="padding-top: 60px;">
+    <h1>Crear Alumno</h1>
+    <form method="post">
+        <fieldset>
+            <legend>Alumno: Nuevo...</legend>
+            <div>
+                <label for="nombre_alumno" class="form-label mt-4">Nombre</label>
+                <input type="tel" class="form-control" id="nombre_alumno" name="nombre"
+                    placeholder="Introduce el nombre del alumno - obligatorio.">
+            </div>
+            <div>
+                <label for="correo_alumno" class="form-label mt-4">Correo Electronico</label>
+                <input type="email" class="form-control" id="correo_alumno" name="correo"
+                    placeholder="Introduce el correo - o no, este campo solo es para los docentes, no se enviara ningun correo.">
+            </div>
+            <div>
+                <label for="telefono_alumno" class="form-label mt-4">Nº Telefono</label>
+                <input type="tel" class="form-control" id="telefono_alumno" name="telefono"
+                    placeholder="Introduce el Numero de telefono - o no, este campo solo es para los docentes.">
+            </div>
+            <div>
+                <label for="extra_alumno" class="form-label mt-4">Datos Extra</label>
+                <textarea class="form-control" id="extra_alumno" rows="3" name="extra"></textarea>
+            </div>
+            <br>
+            <button type="submit" class="btn btn-primary">Guardar</button>
+        </fieldset>
+    </form>
+</div>
+~END_PAGE
