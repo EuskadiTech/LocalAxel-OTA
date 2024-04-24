@@ -162,8 +162,8 @@ async def aula__alumnos__post(req, aula: str, id):
     return redirect(f"/aula/{aula}/alumnos")
 
 
-@app.post("/admin/recargar_menu")
-async def admin__recargar_menu(req, aula: str, id):
+@app.get("/admin/recargar_menu")
+async def admin__recargar_menu(req):
     reload_comedor()
     return "Comedor Recargado."
 
