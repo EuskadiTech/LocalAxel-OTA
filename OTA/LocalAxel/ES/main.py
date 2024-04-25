@@ -140,10 +140,10 @@ async def aula__alumnos__post(req, aula: str, id):
     if id == "new":
         db_alumnos.add(
             {
-                "nombre": req.form["nombre"],
-                "correo": req.form["correo"],
-                "telefono": req.form["telefono"],
-                "extra": req.form["extra"],
+                "nombre": req.form["nombre"] or "No Definido",
+                "correo": req.form["correo"] or "No Definido",
+                "telefono": req.form["telefono"] or "No Definido",
+                "extra": req.form["extra"] or "No Definido",
                 "aula": aula,
             }
         )
@@ -151,10 +151,10 @@ async def aula__alumnos__post(req, aula: str, id):
         db_alumnos.updateById(
             int(id),
             {
-                "nombre": req.form["nombre"],
-                "correo": req.form["correo"],
-                "telefono": req.form["telefono"],
-                "extra": req.form["extra"],
+                "nombre": req.form["nombre"] or "No Definido",
+                "correo": req.form["correo"] or "No Definido",
+                "telefono": req.form["telefono"] or "No Definido",
+                "extra": req.form["extra"] or "No Definido",
                 "aula": aula,
             },
         )
