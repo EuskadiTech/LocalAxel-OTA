@@ -6,6 +6,7 @@ from datetime import datetime
 from utils import requests
 
 db_alumnos = db.getDb("db.alumnos.json")
+db_aulas = db.getDb("db.aulas.json")
 
 app = Microdot()
 
@@ -49,14 +50,21 @@ def build_page(template_file: list, modo: str = "default", **kwargs):
             "extra": "",
             "aula": "",
         }
+    if modo == "edit_aula":
+        edit_aula = db_aulas.getByQuery({"codigo": kwargs["aula"]})[0]
     for value in template:
         if value == "START_PAGE":
             output.append(read("START-PAGE.html"))
             continue
         elif value == "END_PAGE":
             output.append(read("END-PAGE.html"))
-        elif value == "NAVBAR":
-            output.append("".join(build_page("NAVBAR.html", aula=kwargs["aula"])))
+        elif value == "NAVBAR_AULA_LOCAL":
+            output.append(
+                "".join(build_page("aula/NAVBAR_AULA_LOCAL.html", aula=kwargs["aula"]))
+            )
+            continue
+        elif value == "NAVBAR_AULA":
+            output.append("".join(build_page("aula/NAVBAR_AULA.html")))
             continue
         elif value == "LISTA_ALUMNOS":
             alumnos = db_alumnos.getByQuery({"aula": kwargs["aula"].lower()})
@@ -66,8 +74,15 @@ def build_page(template_file: list, modo: str = "default", **kwargs):
             ]
             output += alumnos_output
             continue
+        elif value == "LISTA_AULAS":
+            aulas = db_aulas.getAll()
+            alumnos_output = [
+                f'<tr><th scope="row"><a href="aula/{aula["codigo"]}">{aula["nombre"]}</a></th><td><a class="btn btn-danger" href="aula/{aula["id"]}/delete">Borrar</a></td></tr>'
+                for aula in aulas
+            ]
+            output += alumnos_output
+            continue
         elif value == "ALUMNO_NOMBRE":
-            print(edit_alumno)
             output.append(edit_alumno["nombre"])
             continue
         elif value == "ALUMNO_CORREO":
@@ -78,6 +93,12 @@ def build_page(template_file: list, modo: str = "default", **kwargs):
             continue
         elif value == "ALUMNO_EXTRA":
             output.append(edit_alumno["extra"])
+            continue
+        elif value == "AULA_NOMBRE":
+            output.append(edit_aula["nombre"])
+            continue
+        elif value == "AULA_EXTRA":
+            output.append(edit_aula["extra"])
             continue
         elif value == "CODIGO_AULA":
             output.append(kwargs["aula"])
@@ -97,8 +118,32 @@ def build_page(template_file: list, modo: str = "default", **kwargs):
     return output
 
 
+@app.get("/aula/<aula>")
+async def aula__index(req, aula: str):
+    aula = aula.lower()
+    if aula == "new":
+        return "".join(build_page("aula/new.html", aula=aula)), {
+            "Content-Type": "text/html"
+        }
+    elif "_edit" in aula:
+        eaula=aula.replace("_edit", "")
+        return "".join(build_page("aula/edit.html", modo="edit_aula", aula=eaula)), {
+            "Content-Type": "text/html"
+        }
+
+    return "".join(build_page("aula/-/index.html", aula=aula)), {
+        "Content-Type": "text/html"
+    }
+
+
+@app.get("/aula")
+async def aula__index(req):
+    return "".join(build_page("aula.html")), {"Content-Type": "text/html"}
+
+
 @app.get("/aula/<aula>/alumnos")
 async def aula__alumnos__all(req, aula: str):
+    aula = aula.lower()
     return "".join(build_page("aula/-/alumnos.html", aula=aula)), {
         "Content-Type": "text/html"
     }
@@ -106,6 +151,7 @@ async def aula__alumnos__all(req, aula: str):
 
 @app.get("/aula/<aula>/alumnos/<id>")
 async def aula__alumnos__get(req, aula: str, id):
+    aula = aula.lower()
     if id == "new":
         return "".join(
             build_page("aula/-/alumnos/new.html", aula=aula, alumno_id=id)
@@ -117,12 +163,14 @@ async def aula__alumnos__get(req, aula: str, id):
 
 @app.get("/aula/<aula>/alumnos/<id>/delete")
 async def aula__alumnos__delete(req, aula: str, id):
+    aula = aula.lower()
     db_alumnos.deleteById(int(id))
     return redirect(f"/aula/{aula}/alumnos")
 
 
 @app.get("/aula/<aula>/menu-comedor")
 async def aula__menu_comedor(req, aula: str):
+    aula = aula.lower()
     hoy_iso = datetime.today().isoformat().split("T")[0]
     m = [{"dia": dia, "menu": menu[dia]} for dia in menu.keys()]
     return "".join(
@@ -137,6 +185,7 @@ async def aula__menu_comedor(req, aula: str):
 
 @app.post("/aula/<aula>/alumnos/<id>")
 async def aula__alumnos__post(req, aula: str, id):
+    aula = aula.lower()
     if id == "new":
         db_alumnos.add(
             {
@@ -160,6 +209,32 @@ async def aula__alumnos__post(req, aula: str, id):
         )
 
     return redirect(f"/aula/{aula}/alumnos")
+
+
+@app.post("/aula/<aula>")
+async def aula__post(req, aula: str):
+    aula = aula.lower()
+    if aula == "new":
+        if db_aulas.getByQuery({"codigo": req.form["codigo"]}) != []:
+            return redirect(f"/_error/aula_code_used")
+        db_aulas.add(
+            {
+                "codigo": req.form["codigo"],
+                "nombre": req.form["nombre"] or "No Definido",
+                "extra": req.form["extra"] or "No Definido",
+            }
+        )
+        return redirect(f"/aula/{req.form["codigo"]}")
+    else:
+        db_alumnos.updateByQuery(
+            {"codigo": aula},
+            {
+                "nombre": req.form["nombre"] or "No Definido",
+                "extra": req.form["extra"] or "No Definido",
+            },
+        )
+
+    return redirect(f"/aula")
 
 
 @app.get("/admin/recargar_menu")

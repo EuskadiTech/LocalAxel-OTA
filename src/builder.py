@@ -5,13 +5,18 @@ import glob
 LANG = "ES"
 
 TEMPLATES = [
+    "aula.html",
+    "aula/new.html",
+    "aula/edit.html",
+    "aula/NAVBAR_AULA_LOCAL.html",
+    "aula/NAVBAR_AULA.html",
+    "aula/-/index.html",
     "aula/-/alumnos.html",
     "aula/-/alumnos/new.html",
     "aula/-/alumnos/-.html",
     "aula/-/menu-comedor.html",
     "START-PAGE.html",
     "END-PAGE.html",
-    "NAVBAR.html",
 ]
 STATIC_FILES = [
     "static__fonts__icomoon.eot",
@@ -28,7 +33,12 @@ STATIC_FILES = [
 def get_template(file: str) -> str:
     with open(path.join("src/input/", file), "r") as f:
         contents = f.read()
-        return minify(contents, remove_comments=True, reduce_boolean_attributes=True)
+        return minify(
+            contents,
+            remove_comments=True,
+            reduce_boolean_attributes=True,
+            remove_optional_attribute_quotes=False,
+        )
 
 
 def build() -> dict:
@@ -39,7 +49,7 @@ def build() -> dict:
 
 
 def dump(result: dict) -> None:
-    with open(f"../OTA/LocalAxel/{LANG}/templates.py", "w") as f:
+    with open(f"OTA/LocalAxel/{LANG}/templates.py", "w") as f:
         f.write("TEMPLATES = " + str(result) + "\n")
         f.write("FILES = " + str(STATIC_FILES) + "\n")
     return

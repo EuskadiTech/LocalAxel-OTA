@@ -1,0 +1,26 @@
+START_PAGE~NAVBAR_AULA_LOCAL~
+<div class="container" style="padding-top: 60px;">
+    <h1>Crear Aula</h1>
+    <form method="post">
+        <fieldset>
+            <legend>Aula: Nueva</legend>
+            <div>
+                <label for="codigo_aula" class="form-label mt-4">Codigo</label>
+                <input type="text" class="form-control" id="codigo_aula" name="codigo" required
+                    placeholder="Introduce el codigo del aula - obligatorio.">
+            </div>
+            <div>
+                <label for="nombre_aula" class="form-label mt-4">Nombre</label>
+                <input type="text" class="form-control" id="nombre_aula" name="nombre" required
+                    placeholder="Introduce el nombre del aula - obligatorio.">
+            </div>
+            <div>
+                <label for="extra_alumno" class="form-label mt-4">Datos Extra</label>
+                <textarea class="form-control" id="extra_alumno" rows="3" name="extra"></textarea>
+            </div>
+            <br>
+            <button type="submit" class="btn btn-primary">Guardar</button>
+        </fieldset>
+    </form>
+</div>
+~END_PAGE
