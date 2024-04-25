@@ -140,10 +140,10 @@ async def aula__alumnos__post(req, aula: str, id):
     if id == "new":
         db_alumnos.add(
             {
-                "nombre": req.form["nombre"][0],
-                "correo": req.form["correo"][0],
-                "telefono": req.form["telefono"][0],
-                "extra": req.form["extra"][0],
+                "nombre": req.form["nombre"],
+                "correo": req.form["correo"],
+                "telefono": req.form["telefono"],
+                "extra": req.form["extra"],
                 "aula": aula,
             }
         )
