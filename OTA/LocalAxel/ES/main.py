@@ -61,7 +61,7 @@ def build_page(template_file: list, modo: str = "default", **kwargs):
         elif value == "LISTA_ALUMNOS":
             alumnos = db_alumnos.getByQuery({"aula": kwargs["aula"].lower()})
             alumnos_output = [
-                f'<tr><th scope="row"><a href="alumnos/{alumno["id"]}">{alumno["nombre"]}</a></th><td>{alumno["correo"]}</td><td>{alumno["telefono"]}</td><td><a class="btn btn-primary" href="mailto:{alumno["correo"]}/delete">Enviar Correo</a> <a class="btn btn-danger" href="alumnos/{alumno["id"]}/delete">Borrar</a></td></tr>'
+                f'<tr><th scope="row"><a href="alumnos/{alumno["id"]}">{alumno["nombre"]}</a></th><td>{alumno["correo"]}</td><td>{alumno["telefono"]}</td><td><a class="btn btn-primary" href="mailto:{alumno["correo"]}">Enviar Correo</a> <a class="btn btn-danger" href="alumnos/{alumno["id"]}/delete">Borrar</a></td></tr>'
                 for alumno in alumnos
             ]
             output += alumnos_output
