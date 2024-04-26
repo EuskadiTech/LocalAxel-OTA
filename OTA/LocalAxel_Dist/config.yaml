@@ -1,0 +1,13 @@
+### Ajustes Idiomas
+# Para ver los idiomas aceptados acceder a https://github.com/EuskadiTech/LocalAxel-OTA
+LANG: "ES"
+
+### Ajustes Actualizaciones (OTA)
+# Si quieres desactivar los cambios, NO TOQUES ESTO, Cambia OTA_Disable
+# Solo hazlo una vez instalado
+OTA_URL_Prefix: "https://euskaditech-ota.netlify.app/OTA/LocalAxel/ES/{}"
+OTA_Disable: False
+
+### Menu Comedor
+Menu_URL: "https://euskaditech-ota.netlify.app/OTA/Comedor/test.json"
+Menu_Disable: False

@@ -19,14 +19,8 @@ TEMPLATES = [
     "END-PAGE.html",
 ]
 STATIC_FILES = [
-    "static__fonts__icomoon.eot",
-    "static__fonts__icomoon.svg",
-    "static__fonts__icomoon.ttf",
-    "static__fonts__icomoon.woff",
     "static__icons__512x512.png",
     "static__icons__favicon.ico",
-    "static__img__logo.png",
-    "static__img__bgpattern.jpg",
 ]
 
 
@@ -49,9 +43,9 @@ def build() -> dict:
 
 
 def dump(result: dict) -> None:
-    with open(f"OTA/LocalAxel/{LANG}/templates.py", "w") as f:
-        f.write("TEMPLATES = " + str(result) + "\n")
-        f.write("FILES = " + str(STATIC_FILES) + "\n")
+    with open(f"OTA/LocalAxel/{LANG}/OTA_Files/templates.yaml", "w") as f:
+        f.write("TEMPLATES: " + str(result) + "\n")
+        f.write("FILES: " + str(STATIC_FILES) + "\n")
     return
 
 

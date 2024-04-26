@@ -1,3 +1,0 @@
-microdot
-requests
-pysondb

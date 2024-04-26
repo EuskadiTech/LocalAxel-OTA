@@ -162,3 +162,4 @@ cython_debug/
 OTA_Files/static__*
 db.*
 dev/
+OTA/LocalAxel_Release

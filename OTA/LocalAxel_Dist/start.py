@@ -1,4 +1,6 @@
 import utils
+import microdot as _1
+import pysondb as _2
 
 if __name__ == "__main__":
     utils.ota_updater()
@@ -14,5 +16,4 @@ if __name__ == "__main__":
     print(" http://127.0.0.1:17170/      ")
     print("==============================")
     print("                              ")
-
-    __import__("main").app.run(host="0.0.0.0", port=17170, debug=False)
+    e = exec(open("OTA_Files/main.py").read())
