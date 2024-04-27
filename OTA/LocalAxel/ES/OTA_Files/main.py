@@ -110,7 +110,7 @@ def build_page(template_file: list, modo: str = "default", **kwargs):
             continue
         elif value == "MENU_COMEDOR_TABLA":
             menu_output = [
-                f'<tr><th scope="row">{dia["dia"]}</th><td>{dia["menu"].replace("\n", "<br>")}</td></tr>'
+                f'<tr><th scope="row">{dia["dia"]}</th><td>{dia["menu"].replace(chr(10), "<br>")}</td></tr>'
                 for dia in kwargs["menu"]
             ]
             output += menu_output
