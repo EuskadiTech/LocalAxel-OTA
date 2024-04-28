@@ -163,3 +163,4 @@ OTA_Files/static__*
 db.*
 dev/
 OTA/LocalAxel_Release
+.DS_Store
