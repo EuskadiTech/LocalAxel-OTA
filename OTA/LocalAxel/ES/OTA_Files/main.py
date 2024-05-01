@@ -1,7 +1,7 @@
 from microdot import Microdot
 from pysondb import db
 from datetime import datetime
-from utils import requests
+from utils import requests, ota_updater
 import yaml
 
 config = yaml.safe_load(open("config.yaml"))
@@ -13,7 +13,7 @@ db_aulas = db.getDb("db.aulas.json")
 app = Microdot()
 
 FOLDER_NAME = "OTA_Files"
-
+HEADERS = {"Content-Type": "text/html; charset=utf-8"}
 menu = {}
 
 
@@ -67,6 +67,9 @@ def build_page(template_file: list, modo: str = "default", **kwargs):
             continue
         elif value == "NAVBAR_AULA":
             output.append("".join(build_page("aula/NAVBAR_AULA.html")))
+            continue
+        elif value == "NAVBAR_ADMIN":
+            output.append("".join(build_page("NAVBAR_ADMIN.html")))
             continue
         elif value == "LISTA_ALUMNOS":
             alumnos = db_alumnos.getByQuery({"aula": kwargs["aula"].lower()})
@@ -124,31 +127,28 @@ def build_page(template_file: list, modo: str = "default", **kwargs):
 async def aula__index(req, aula: str):
     aula = aula.lower()
     if aula == "new":
-        return "".join(build_page("aula/new.html", aula=aula)), {
-            "Content-Type": "text/html"
-        }
+        return "".join(build_page("aula/new.html", aula=aula)), HEADERS
     elif "_edit" in aula:
         eaula=aula.replace("_edit", "")
-        return "".join(build_page("aula/edit.html", modo="edit_aula", aula=eaula)), {
-            "Content-Type": "text/html"
-        }
+        return "".join(build_page("aula/edit.html", modo="edit_aula", aula=eaula)), HEADERS
 
-    return "".join(build_page("aula/-/index.html", aula=aula)), {
-        "Content-Type": "text/html"
-    }
+    return "".join(build_page("aula/-/index.html", aula=aula)), HEADERS
 
 
 @app.get("/aula")
 async def aula__index(req):
-    return "".join(build_page("aula.html")), {"Content-Type": "text/html"}
+    return "".join(build_page("aula.html")), HEADERS
 
+
+@app.get("/aula/<aula>/soporte-tecnico")
+async def aula__soportetecnico(req, aula: str):
+    aula = aula.lower()
+    return "".join(build_page("aula/-/soporte-tecnico.html", aula=aula)), HEADERS
 
 @app.get("/aula/<aula>/alumnos")
 async def aula__alumnos__all(req, aula: str):
     aula = aula.lower()
-    return "".join(build_page("aula/-/alumnos.html", aula=aula)), {
-        "Content-Type": "text/html"
-    }
+    return "".join(build_page("aula/-/alumnos.html", aula=aula)), HEADERS
 
 
 @app.get("/aula/<aula>/alumnos/<id>")
@@ -157,10 +157,10 @@ async def aula__alumnos__get(req, aula: str, id):
     if id == "new":
         return "".join(
             build_page("aula/-/alumnos/new.html", aula=aula, alumno_id=id)
-        ), {"Content-Type": "text/html"}
+        ), HEADERS
     return "".join(
         build_page("aula/-/alumnos/-.html", modo="edit_alumno", aula=aula, alumno_id=id)
-    ), {"Content-Type": "text/html"}
+    ), HEADERS
 
 
 @app.get("/aula/<aula>/alumnos/<id>/delete")
@@ -182,7 +182,7 @@ async def aula__menu_comedor(req, aula: str):
             menu=m,
             hoy=menu.get(hoy_iso, "Hoy no hay comedor, o no se ha descargado el menu."),
         )
-    ), {"Content-Type": "text/html"}
+    ), HEADERS
 
 
 @app.post("/aula/<aula>/alumnos/<id>")
@@ -239,10 +239,33 @@ async def aula__post(req, aula: str):
     return redirect(f"/aula")
 
 
+@app.get("/")
+async def index(req):
+    return "".join(build_page("index.html")), HEADERS
+
+@app.get("/admin")
+async def aula__index(req):
+    return "".join(build_page("admin.html")), HEADERS
+
 @app.get("/admin/recargar_menu")
 async def admin__recargar_menu(req):
     reload_comedor()
-    return "Comedor Recargado."
+    return "Comedor Recargado, ya puedes cerrar esta pestaña."
+
+@app.get("/admin/ota_update")
+async def admin__ota_update(req):
+    if req.args["pin"] == config["PinCode"] or "0000":
+        ota_updater()
+        return redirect("/admin#post_update")
+    return redirect("/_error/incorrect_admin_pin")
+
+@app.get("/_error/incorrect_admin_pin")
+async def error__incorrect_admin_pin(req):
+    return "".join(build_page("_error/incorrect_admin_pin.html")), HEADERS
+
+@app.get("/_error/incorrect_admin_pin")
+async def error__aula_code_used(req):
+    return "".join(build_page("_error/aula_code_used.html")), HEADERS
 
 
 if __name__ == "__main__":

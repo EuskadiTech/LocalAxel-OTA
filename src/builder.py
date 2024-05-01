@@ -1,6 +1,7 @@
 from htmlmin import minify
 from os import path
 import glob
+from yaml import safe_dump
 
 LANG = "ES"
 
@@ -11,10 +12,14 @@ TEMPLATES = [
     "aula/NAVBAR_AULA_LOCAL.html",
     "aula/NAVBAR_AULA.html",
     "aula/-/index.html",
+    "aula/-/soporte-tecnico.html",
     "aula/-/alumnos.html",
     "aula/-/alumnos/new.html",
     "aula/-/alumnos/-.html",
     "aula/-/menu-comedor.html",
+    "NAVBAR_ADMIN.html",
+    "index.html",
+    "admin.html",
     "START-PAGE.html",
     "END-PAGE.html",
 ]
@@ -44,8 +49,8 @@ def build() -> dict:
 
 def dump(result: dict) -> None:
     with open(f"OTA/LocalAxel/{LANG}/OTA_Files/templates.yaml", "w") as f:
-        f.write("TEMPLATES: " + str(result) + "\n")
-        f.write("FILES: " + str(STATIC_FILES) + "\n")
+        k = {"TEMPLATES": result, "FILES": STATIC_FILES}
+        safe_dump(k, f)
     return
 
 

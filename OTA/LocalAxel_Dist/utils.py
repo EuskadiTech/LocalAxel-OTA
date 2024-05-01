@@ -22,6 +22,7 @@ def ota_updater():
     ota_file("OTA_Files/templates.yaml")
     ota_file("OTA_Files/main.py")
     ota_file("OTA_Files/utils.py")
+    ota_file("utils.py")
     FILES = yaml.safe_load(open("OTA_Files/templates.yaml"))["FILES"]
     print("Updating Files")
     for file in FILES:
