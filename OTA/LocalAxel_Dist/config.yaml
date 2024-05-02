@@ -1,3 +1,7 @@
+### Ajustes Seguridad
+# ¡¡¡CAMBIAR EL PIN POR DEFECTO (991199)!!!
+PinCode: 991199
+
 ### Ajustes Idiomas
 # Para ver los idiomas aceptados acceder a https://github.com/EuskadiTech/LocalAxel-OTA
 LANG: "ES"

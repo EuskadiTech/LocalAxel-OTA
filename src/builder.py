@@ -17,6 +17,8 @@ TEMPLATES = [
     "aula/-/alumnos/new.html",
     "aula/-/alumnos/-.html",
     "aula/-/menu-comedor.html",
+    "_error/incorrect_admin_pin.html",
+    "_error/aula_code_used.html",
     "NAVBAR_ADMIN.html",
     "index.html",
     "admin.html",

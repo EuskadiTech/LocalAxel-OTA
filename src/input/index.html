@@ -2,22 +2,43 @@ START_PAGE~
 <div class="container" style="padding-top: 60px;">
 
     <h1>Local Axel</h1>
-    <div class="d-flex flex-row">
-        <a class="card text-white bg-success mb-3 p-3 m-2" style="max-width: 20rem; text-decoration: none;"
-            href="/aula">
+    <div class="d-flex flex-row flex-wrap">
+        <div class="card text-white bg-success mb-3 p-3 m-2" style="width: 25rem; text-decoration: none;" href="/aula">
             <div class="card-body">
                 <h4 class="card-title">Axel Aula</h4>
                 <p class="card-text">El programa para automatizar el aula.</p>
+                <p class="card-text">Configuración para administradores</p>
+                <form action="/aula_open" method="get">
+                    <fieldset>
+                        <label for="pin" class="form-label mt-4">Ir a un aula</label>
+                        <div class="input-group mb-3">
+                            <input type="text" name="pin" class="form-control" id="pin" aria-describedby="button-addon2"
+                                autocomplete="off" placeholder="Codigo del aula">
+                            <button class="btn btn-primary" type="submit" id="button-addon2">Ir</button>
+                            <a class="btn btn-primary" href="/aula">Lista</a>
+                        </div>
+                    </fieldset>
+                </form>
             </div>
-        </a>
-        <a class="card text-white bg-danger mb-3 p-3 m-2" style="max-width: 20rem; text-decoration: none;"
-            href="/admin">
+        </div>
+        <div class="card text-white bg-danger mb-3 p-3 m-2" style="width: 25rem; text-decoration: none;">
             <div class="card-body">
                 <h4 class="card-title">Administración</h4>
                 <p class="card-text">Configuración para administradores</p>
+                <form action="/admin" method="get">
+                    <fieldset>
+                        <label for="pin" class="form-label mt-4">PIN de administrador</label>
+                        <div class="input-group mb-3">
+                            <input type="password" name="pin" class="form-control" id="pin"
+                                aria-describedby="button-addon2" autocomplete="off"
+                                placeholder="Configurado en config.yaml">
+                            <button class="btn btn-primary" type="submit" id="button-addon2">Ir</button>
+                        </div>
+                    </fieldset>
+                </form>
             </div>
-        </a>
-        <a class="card text-white bg-primary mb-3 p-3 m-2" style="max-width: 20rem; text-decoration: none;" href="/">
+        </div>
+        <a class="card text-white bg-primary mb-3 p-3 m-2" style="width: 25rem; text-decoration: none;" href="/">
             <div class="card-body">
                 <h4 class="card-title">Axel Smart</h4>
                 <p class="card-text">Multiples aplicaciónes para crear tu propia IA.<br>Por el momento no esta

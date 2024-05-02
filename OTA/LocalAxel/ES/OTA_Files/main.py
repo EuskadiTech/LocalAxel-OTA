@@ -4,7 +4,7 @@ from datetime import datetime
 from utils import requests, ota_updater
 import yaml
 
-config = yaml.safe_load(open("config.yaml"))
+config: dict = yaml.safe_load(open("config.yaml"))
 templates = yaml.safe_load(open("OTA_Files/templates.yaml"))
 
 db_alumnos = db.getDb("db.alumnos.json")
@@ -125,11 +125,11 @@ def build_page(template_file: list, modo: str = "default", **kwargs):
 
 @app.get("/aula/<aula>")
 async def aula__index(req, aula: str):
-    aula = aula.lower()
-    if aula == "new":
+    aula = aula.upper()
+    if aula == "NEW":
         return "".join(build_page("aula/new.html", aula=aula)), HEADERS
-    elif "_edit" in aula:
-        eaula=aula.replace("_edit", "")
+    elif "_EDIT" in aula:
+        eaula=aula.replace("_EDIT", "")
         return "".join(build_page("aula/edit.html", modo="edit_aula", aula=eaula)), HEADERS
 
     return "".join(build_page("aula/-/index.html", aula=aula)), HEADERS
@@ -142,18 +142,22 @@ async def aula__index(req):
 
 @app.get("/aula/<aula>/soporte-tecnico")
 async def aula__soportetecnico(req, aula: str):
-    aula = aula.lower()
+    aula = aula.upper()
     return "".join(build_page("aula/-/soporte-tecnico.html", aula=aula)), HEADERS
 
 @app.get("/aula/<aula>/alumnos")
 async def aula__alumnos__all(req, aula: str):
-    aula = aula.lower()
+    aula = aula.upper()
     return "".join(build_page("aula/-/alumnos.html", aula=aula)), HEADERS
+@app.get("/aula/<aula>/delete")
+async def aula__deoete(req, aula: str):
+    db_aulas.deleteById(int(aula))
+    return redirect("/aula")
 
 
 @app.get("/aula/<aula>/alumnos/<id>")
 async def aula__alumnos__get(req, aula: str, id):
-    aula = aula.lower()
+    aula = aula.upper()
     if id == "new":
         return "".join(
             build_page("aula/-/alumnos/new.html", aula=aula, alumno_id=id)
@@ -165,14 +169,14 @@ async def aula__alumnos__get(req, aula: str, id):
 
 @app.get("/aula/<aula>/alumnos/<id>/delete")
 async def aula__alumnos__delete(req, aula: str, id):
-    aula = aula.lower()
+    aula = aula.upper()
     db_alumnos.deleteById(int(id))
     return redirect(f"/aula/{aula}/alumnos")
 
 
 @app.get("/aula/<aula>/menu-comedor")
 async def aula__menu_comedor(req, aula: str):
-    aula = aula.lower()
+    aula = aula.upper()
     hoy_iso = datetime.today().isoformat().split("T")[0]
     m = [{"dia": dia, "menu": menu[dia]} for dia in menu.keys()]
     return "".join(
@@ -187,7 +191,7 @@ async def aula__menu_comedor(req, aula: str):
 
 @app.post("/aula/<aula>/alumnos/<id>")
 async def aula__alumnos__post(req, aula: str, id):
-    aula = aula.lower()
+    aula = aula.upper()
     if id == "new":
         db_alumnos.add(
             {
@@ -215,18 +219,18 @@ async def aula__alumnos__post(req, aula: str, id):
 
 @app.post("/aula/<aula>")
 async def aula__post(req, aula: str):
-    aula = aula.lower()
-    if aula == "new":
-        if db_aulas.getByQuery({"codigo": req.form["codigo"]}) != []:
+    aula = aula.upper()
+    if aula == "NEW":
+        if db_aulas.getByQuery({"codigo": req.form["codigo"].upper()}) != []:
             return redirect(f"/_error/aula_code_used")
         db_aulas.add(
             {
-                "codigo": req.form["codigo"],
+                "codigo": req.form["codigo"].upper(),
                 "nombre": req.form["nombre"] or "No Definido",
                 "extra": req.form["extra"] or "No Definido",
             }
         )
-        return redirect(f"/aula/{req.form["codigo"]}")
+        return redirect(f"/aula/{req.form["codigo"].upper()}")
     else:
         db_alumnos.updateByQuery(
             {"codigo": aula},
@@ -245,29 +249,50 @@ async def index(req):
 
 @app.get("/admin")
 async def aula__index(req):
-    return "".join(build_page("admin.html")), HEADERS
+    print("Alguien ha accedido al panel de Admin ", end="")
+    if req.args.get("pin") == config.get("PinCode", "991199"):
+        print("con credenciales validos")
+        return "".join(build_page("admin.html", inputpin = req.args.get("pin"))), HEADERS
+    print("con credenciales invalidos!!!!!!!")
+    return redirect("/_error/incorrect_admin_pin")
 
 @app.get("/admin/recargar_menu")
 async def admin__recargar_menu(req):
     reload_comedor()
     return "Comedor Recargado, ya puedes cerrar esta pestaña."
 
+@app.get("/aula_open")
+async def aula_open(req):
+    return redirect(f'/aula/{req.args.get("pin")}')
+
 @app.get("/admin/ota_update")
 async def admin__ota_update(req):
-    if req.args["pin"] == config["PinCode"] or "0000":
+    print("Alguien ha accedido al panel de Admin ", end="")
+    if req.args.get("pin") == config.get("PinCode", "991199"):
+        print("con credenciales validos")
         ota_updater()
         return redirect("/admin#post_update")
+    print("con credenciales invalidos!!!!!!!")
     return redirect("/_error/incorrect_admin_pin")
 
 @app.get("/_error/incorrect_admin_pin")
 async def error__incorrect_admin_pin(req):
     return "".join(build_page("_error/incorrect_admin_pin.html")), HEADERS
 
-@app.get("/_error/incorrect_admin_pin")
+@app.get("/_error/aula_code_used")
 async def error__aula_code_used(req):
     return "".join(build_page("_error/aula_code_used.html")), HEADERS
 
 
 if __name__ == "__main__":
     reload_comedor()
+    if config.get("PinCode", "991199") == "991199":
+        print("     AVISO DE SEGURIDAD.     ")
+        print("=============================")
+        print(" PARA SERVIDORES COMPARTIDOS ")
+        print(" Y SERVIDORES PUBLICOS       ")
+        print("=============================")
+        print(" Cambia el PinCode del       ")
+        print(" config.yaml por otro        ")
+        print("=============================")
     app.run(host="0.0.0.0", port=17170, debug=False)

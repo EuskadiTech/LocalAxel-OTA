@@ -11,9 +11,9 @@ TEMPLATES:
     t = d.getElementsByTagName("script")[0]; t.parentNode.insertBefore(s, t);</script>
     </body> </html>'
   NAVBAR_ADMIN.html: "<nav class=\"navbar navbar-expand-lg bg-danger\" data-bs-theme=\"\
-    dark\"> <div class=\"container\"> <a class=\"navbar-brand\" href=\"/admin\">Administraci\xF3\
-    n</a> <button class=\"navbar-toggler\" type=\"button\" data-bs-toggle=\"collapse\"\
-    \ data-bs-target=\"#navbarColor01\" aria-controls=\"navbarColor01\" aria-expanded=\"\
+    dark\"> <div class=\"container\"> <span class=\"navbar-brand\" href=\"/admin\"\
+    >Administraci\xF3n</span> <button class=\"navbar-toggler\" type=\"button\" data-bs-toggle=\"\
+    collapse\" data-bs-target=\"#navbarColor01\" aria-controls=\"navbarColor01\" aria-expanded=\"\
     false\" aria-label=\"Toggle navigation\"> <span class=\"navbar-toggler-icon\"\
     ></span> </button> <div class=\"collapse navbar-collapse\" id=\"navbarColor01\"\
     > <ul class=\"navbar-nav me-auto\"> </ul> <div class=\"d-flex\"> <a class=\"btn\
@@ -24,6 +24,14 @@ TEMPLATES:
     rel="shortcut icon" href="/static/icons__favicon.ico" type="image/x-icon"><link
     href="https://bootswatch.com/5/spacelab/bootstrap.min.css" rel="stylesheet"></head>
     <body>
+  _error/aula_code_used.html: "START_PAGE~ <div class=\"container\" style=\"padding-top:\
+    \ 60px;\"> <h1>\xA1Oops!</h1> <h3>El codigo del aula esta siendo utilizado por\
+    \ otra aula</h3> <h3>Soluciones</h3> <ol> <li>Utilizar el N\xBA de puerta (ej:\
+    \ 308)</li> <li>Utilizar un prefijo o sufijo (ej: DBH 308 / 308 B)</li> <li>Elegir\
+    \ un codigo diferente</li> </ol> </div> ~END_PAGE"
+  _error/incorrect_admin_pin.html: "START_PAGE~ <div class=\"container\" style=\"\
+    padding-top: 60px;\"> <h1>\xA1Oops!</h1> <h3>Ese pin es incorrecto, \xBFde verdad\
+    \ eres administrador?</h3> </div> ~END_PAGE"
   admin.html: "START_PAGE~NAVBAR_ADMIN~ <div class=\"container\" style=\"padding-top:\
     \ 60px;\"> <h1>Administraci\xF3n</h1> <h2>Axel Aula</h2> <h3>Men\xFA comedor</h3>\
     \ Si no ves los datos de este mes, estan incompletos, o en servidores 24/7: Haz\
@@ -120,7 +128,7 @@ TEMPLATES:
     class="nav-link" href="/aula/~CODIGO_AULA~/menu-comedor">Menu Comedor</a> </li>
     <li class="nav-item"> <a class="nav-link" href="/aula/~CODIGO_AULA~/soporte-tecnico">Soporte
     Tecnico</a> </li> </ul> <div class="d-flex"> <a class="btn btn-secondary my-2
-    my-sm-0" href="/admin">Administrar Servidor</a> </div> </div> </div> </nav>
+    my-sm-0" href="/">Volver a inicio</a> </div> </div> </div> </nav>
   aula/edit.html: 'START_PAGE~NAVBAR_AULA_LOCAL~ <div class="container" style="padding-top:
     60px;"> <h1>Editar Aula</h1> <form method="post"> <fieldset> <legend>Aula: ~CODIGO_AULA~</legend>
     <div> <label for="nombre_aula" class="form-label mt-4">Nombre</label> <input type="text"
@@ -142,15 +150,27 @@ TEMPLATES:
     </div> <br> <button type="submit" class="btn btn-primary">Guardar</button> </fieldset>
     </form> </div> ~END_PAGE'
   index.html: "START_PAGE~ <div class=\"container\" style=\"padding-top: 60px;\">\
-    \ <h1>Local Axel</h1> <div class=\"d-flex flex-row\"> <a class=\"card text-white\
-    \ bg-success mb-3 p-3 m-2\" style=\"max-width: 20rem; text-decoration: none;\"\
-    \ href=\"/aula\"> <div class=\"card-body\"> <h4 class=\"card-title\">Axel Aula</h4>\
-    \ <p class=\"card-text\">El programa para automatizar el aula.</p> </div> </a>\
-    \ <a class=\"card text-white bg-danger mb-3 p-3 m-2\" style=\"max-width: 20rem;\
-    \ text-decoration: none;\" href=\"/admin\"> <div class=\"card-body\"> <h4 class=\"\
-    card-title\">Administraci\xF3n</h4> <p class=\"card-text\">Configuraci\xF3n para\
-    \ administradores</p> </div> </a> <a class=\"card text-white bg-primary mb-3 p-3\
-    \ m-2\" style=\"max-width: 20rem; text-decoration: none;\" href=\"/\"> <div class=\"\
-    card-body\"> <h4 class=\"card-title\">Axel Smart</h4> <p class=\"card-text\">Multiples\
-    \ aplicaci\xF3nes para crear tu propia IA.<br>Por el momento no esta disponible.</p>\
-    \ </div> </a> </div> </div> ~END_PAGE"
+    \ <h1>Local Axel</h1> <div class=\"d-flex flex-row flex-wrap\"> <div class=\"\
+    card text-white bg-success mb-3 p-3 m-2\" style=\"width: 25rem; text-decoration:\
+    \ none;\" href=\"/aula\"> <div class=\"card-body\"> <h4 class=\"card-title\">Axel\
+    \ Aula</h4> <p class=\"card-text\">El programa para automatizar el aula.</p> <p\
+    \ class=\"card-text\">Configuraci\xF3n para administradores</p> <form action=\"\
+    /aula_open\" method=\"get\"> <fieldset> <label for=\"pin\" class=\"form-label\
+    \ mt-4\">Ir a un aula</label> <div class=\"input-group mb-3\"> <input type=\"\
+    text\" name=\"pin\" class=\"form-control\" id=\"pin\" aria-describedby=\"button-addon2\"\
+    \ autocomplete=\"off\" placeholder=\"Codigo del aula\"> <button class=\"btn btn-primary\"\
+    \ type=\"submit\" id=\"button-addon2\">Ir</button> <a class=\"btn btn-primary\"\
+    \ href=\"/aula\">Lista</a> </div> </fieldset> </form> </div> </div> <div class=\"\
+    card text-white bg-danger mb-3 p-3 m-2\" style=\"width: 25rem; text-decoration:\
+    \ none;\"> <div class=\"card-body\"> <h4 class=\"card-title\">Administraci\xF3\
+    n</h4> <p class=\"card-text\">Configuraci\xF3n para administradores</p> <form\
+    \ action=\"/admin\" method=\"get\"> <fieldset> <label for=\"pin\" class=\"form-label\
+    \ mt-4\">PIN de administrador</label> <div class=\"input-group mb-3\"> <input\
+    \ type=\"password\" name=\"pin\" class=\"form-control\" id=\"pin\" aria-describedby=\"\
+    button-addon2\" autocomplete=\"off\" placeholder=\"Configurado en config.yaml\"\
+    > <button class=\"btn btn-primary\" type=\"submit\" id=\"button-addon2\">Ir</button>\
+    \ </div> </fieldset> </form> </div> </div> <a class=\"card text-white bg-primary\
+    \ mb-3 p-3 m-2\" style=\"width: 25rem; text-decoration: none;\" href=\"/\"> <div\
+    \ class=\"card-body\"> <h4 class=\"card-title\">Axel Smart</h4> <p class=\"card-text\"\
+    >Multiples aplicaci\xF3nes para crear tu propia IA.<br>Por el momento no esta\
+    \ disponible.</p> </div> </a> </div> </div> ~END_PAGE"
