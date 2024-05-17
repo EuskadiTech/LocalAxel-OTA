@@ -9,6 +9,7 @@ templates = yaml.safe_load(open("OTA_Files/templates.yaml"))
 
 db_alumnos = db.getDb("db.alumnos.json")
 db_aulas = db.getDb("db.aulas.json")
+db_autotareas = db.getDb("db.autotareas.json")
 
 app = Microdot()
 
@@ -52,6 +53,16 @@ def build_page(template_file: list, modo: str = "default", **kwargs):
             "extra": "",
             "aula": "",
         }
+    if modo == "edit_tarea":
+        edit_tarea = db_autotareas.getById(int(kwargs["tarea_id"]))
+    else:
+        edit_tarea = {
+            "nombre": "",
+            "correo": "",
+            "telefono": "",
+            "extra": "",
+            "aula": "",
+        }
     if modo == "edit_aula":
         edit_aula = db_aulas.getByQuery({"codigo": kwargs["aula"]})[0]
     for value in template:
@@ -72,9 +83,25 @@ def build_page(template_file: list, modo: str = "default", **kwargs):
             output.append("".join(build_page("NAVBAR_ADMIN.html")))
             continue
         elif value == "LISTA_ALUMNOS":
-            alumnos = db_alumnos.getByQuery({"aula": kwargs["aula"].lower()})
+            alumnos = db_alumnos.getByQuery({"aula": kwargs["aula"].upper()})
             alumnos_output = [
                 f'<tr><th scope="row"><a href="alumnos/{alumno["id"]}">{alumno["nombre"]}</a></th><td>{alumno["correo"]}</td><td>{alumno["telefono"]}</td><td><a class="btn btn-primary" href="mailto:{alumno["correo"]}">Enviar Correo</a> <a class="btn btn-danger" href="alumnos/{alumno["id"]}/delete">Borrar</a></td></tr>'
+                for alumno in alumnos
+            ]
+            output += alumnos_output
+            continue
+        elif value == "LISTA_TAREAS":
+            tareas = db_autotareas.getByQuery({"aula": kwargs["aula"].upper()})
+            alumnos_output = [
+                f'<tr><th scope="row"><a href="tareas/{alumno["id"]}">{alumno["tipo"]}: {alumno["nombre"]}</a></td><td>{" > ".join(alumno["alumno"])}</td><td><a class="btn btn-danger" href="tareas/{alumno["id"]}/delete">Borrar</a></td></tr>'
+                for alumno in tareas
+            ]
+            output += alumnos_output
+            continue
+        elif value == "CHECK_ALUMNOS":
+            alumnos = db_alumnos.getByQuery({"aula": kwargs["aula"].upper()})
+            alumnos_output = [
+                f'<div class="form-check"><input class="form-check-input" type="checkbox" value="{alumno["nombre"]}" id="cb-{alumno["id"]}" name="alumno"><label class="form-check-label" for="cb-{alumno["id"]}">{alumno["nombre"]}</label></div>'
                 for alumno in alumnos
             ]
             output += alumnos_output
@@ -145,12 +172,19 @@ async def aula__soportetecnico(req, aula: str):
     aula = aula.upper()
     return "".join(build_page("aula/-/soporte-tecnico.html", aula=aula)), HEADERS
 
+
+@app.get("/aula/<aula>/tareas")
+async def aula__tareas__all(req, aula: str):
+    aula = aula.upper()
+    return "".join(build_page("aula/-/tareas.html", aula=aula)), HEADERS
+
 @app.get("/aula/<aula>/alumnos")
 async def aula__alumnos__all(req, aula: str):
     aula = aula.upper()
     return "".join(build_page("aula/-/alumnos.html", aula=aula)), HEADERS
+
 @app.get("/aula/<aula>/delete")
-async def aula__deoete(req, aula: str):
+async def aula__delete(req, aula: str):
     db_aulas.deleteById(int(aula))
     return redirect("/aula")
 
@@ -164,6 +198,17 @@ async def aula__alumnos__get(req, aula: str, id):
         ), HEADERS
     return "".join(
         build_page("aula/-/alumnos/-.html", modo="edit_alumno", aula=aula, alumno_id=id)
+    ), HEADERS
+
+@app.get("/aula/<aula>/tareas/<id>")
+async def aula__tareas__get(req, aula: str, id):
+    aula = aula.upper()
+    if id == "new":
+        return "".join(
+            build_page("aula/-/tareas/new.html", aula=aula, alumno_id=id)
+        ), HEADERS
+    return "".join(
+        build_page("aula/-/tareas/-.html", modo="edit_tarea", aula=aula, tarea_id=id)
     ), HEADERS
 
 
@@ -216,7 +261,41 @@ async def aula__alumnos__post(req, aula: str, id):
 
     return redirect(f"/aula/{aula}/alumnos")
 
+@app.post("/aula/<aula>/tareas/<id>")
+async def aula__tareas__post(req, aula: str, id):
+    aula = aula.upper()
+    if id == "new":
+        db_autotareas.add(
+            {
+                "nombre": req.form["nombre"] or "No Definido",
+                "tipo": req.form["tipo"] or "No Definido",
+                "alumno": req.form.getlist("alumno") or [],
+                "dow": req.form.getlist("dow") or [],
+                "dif": req.form["dif"] or "0",
+                "aula": aula,
+            }
+        )
+    else:
+        db_autotareas.updateById(
+            int(id),
+            {
+                "nombre": req.form["nombre"] or "No Definido",
+                "tipo": req.form["tipo"] or "No Definido",
+                "alumno": req.form.getlist("alumno") or [],
+                "dow": req.form.getlist("dow") or [],
+                "dif": req.form["dif"] or "0",
+                "aula": aula,
+            }
+        )
 
+    return redirect(f"/aula/{aula}/tareas")
+
+
+@app.get("/aula/<aula>/tareas/<id>/delete")
+async def aula__tareas__delete(req, aula: str, id):
+    aula = aula.upper()
+    db_autotareas.deleteById(int(id))
+    return redirect(f"/aula/{aula}/tareas")
 @app.post("/aula/<aula>")
 async def aula__post(req, aula: str):
     aula = aula.upper()
@@ -248,11 +327,12 @@ async def index(req):
     return "".join(build_page("index.html")), HEADERS
 
 @app.get("/admin")
-async def aula__index(req):
+async def admin(req):
     print("Alguien ha accedido al panel de Admin ", end="")
-    if req.args.get("pin") == config.get("PinCode", "991199"):
+    print(str(req.args.get("pin")), str(config.get("PinCode", "991199")))
+    if str(req.args.get("pin")) == str(config.get("PinCode", "991199")):
         print("con credenciales validos")
-        return "".join(build_page("admin.html", inputpin = req.args.get("pin"))), HEADERS
+        return "".join(build_page("admin.html", inputpin = str(req.args.get("pin")))), HEADERS
     print("con credenciales invalidos!!!!!!!")
     return redirect("/_error/incorrect_admin_pin")
 
@@ -282,6 +362,7 @@ async def error__incorrect_admin_pin(req):
 @app.get("/_error/aula_code_used")
 async def error__aula_code_used(req):
     return "".join(build_page("_error/aula_code_used.html")), HEADERS
+
 
 
 if __name__ == "__main__":

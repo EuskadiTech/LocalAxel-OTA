@@ -1,0 +1,24 @@
+START_PAGE~NAVBAR_AULA_LOCAL~
+<div class="container" style="padding-top: 60px;">
+    <h1>Editar Tarea</h1>
+    <form method="post">
+        <fieldset>
+            <legend>Tarea: ~TAREA_TIPO~: ~TAREA_NOMBRE~</legend>
+            <div>
+                <label for="tipo_tarea" class="form-label mt-4">Tipo</label>
+                <input type="text" class="form-control" id="tipo_tarea" value="~TAREA_TIPO~" name="tipo"
+                    placeholder="Introduce el tipo o categoria de la tarea (p.e. Cocina)">
+            </div>
+            <div>
+                <label for="nombre_tarea" class="form-label mt-4">Nombre</label>
+                <input type="text" class="form-control" id="nombre_tarea" value="~TAREA_NOMBRE~" name="nombre"
+                    placeholder="Introduce el nombre de la tarea (p.e. Fregar los platos)">
+            </div>
+            <br>
+            ~CHECK_ALUMNOS~
+            <br>
+            <button type="submit" class="btn btn-primary">Guardar</button>
+        </fieldset>
+    </form>
+</div>
+~END_PAGE

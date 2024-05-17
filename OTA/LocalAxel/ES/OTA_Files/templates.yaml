@@ -41,9 +41,9 @@ TEMPLATES:
     /admin/recargar_menu\" target=\"_blank\" class=\"btn btn-warning btn-sm\">Actualizar\
     \ LocalAxel manualmente</a> (normalmente se actualiza al abrir), tendras que seguir\
     \ los pasos de abajo, debido a que Local Axel no se reinicia automaticamente.\
-    \ <h3 id=\"post_update\">Pasos a seguir despues de actualizar Local Axel</h3>\
-    \ Si has actualizado LocalAxel, debes cerrar y volver a abrir LocalAxel desde\
-    \ el ordenador primario. </div> ~END_PAGE"
+    \ <h3 id=\"post_update\">Pasos a seguir despues de actualizar manualmente Local\
+    \ Axel</h3> Si has actualizado LocalAxel, debes cerrar y volver a abrir LocalAxel\
+    \ desde el ordenador primario. </div> ~END_PAGE"
   aula.html: "START_PAGE~NAVBAR_AULA~ <div class=\"container\" style=\"padding-top:\
     \ 60px;\"> <h1>Lista de aulas</h1> <table class=\"table table-hover\"> <thead>\
     \ <tr class=\"table-success\"> <th scope=\"col\">Aula</th> <th scope=\"col\">Acci\xF3\
@@ -58,7 +58,7 @@ TEMPLATES:
   aula/-/alumnos/-.html: "START_PAGE~NAVBAR_AULA_LOCAL~ <div class=\"container\" style=\"\
     padding-top: 60px;\"> <h1>Editar Alumno</h1> <form method=\"post\"> <fieldset>\
     \ <legend>Alumno: ~ALUMNO_NOMBRE~</legend> <div> <label for=\"nombre_alumno\"\
-    \ class=\"form-label mt-4\">Nombre</label> <input type=\"tel\" class=\"form-control\"\
+    \ class=\"form-label mt-4\">Nombre</label> <input type=\"text\" class=\"form-control\"\
     \ id=\"nombre_alumno\" value=\"~ALUMNO_NOMBRE~\" name=\"nombre\" placeholder=\"\
     Introduce el nombre del alumno - obligatorio.\"> </div> <div> <label for=\"correo_alumno\"\
     \ class=\"form-label mt-4\">Correo Electronico</label> <input type=\"email\" class=\"\
@@ -76,7 +76,7 @@ TEMPLATES:
   aula/-/alumnos/new.html: "START_PAGE~NAVBAR_AULA_LOCAL~ <div class=\"container\"\
     \ style=\"padding-top: 60px;\"> <h1>Crear Alumno</h1> <form method=\"post\"> <fieldset>\
     \ <legend>Alumno: Nuevo...</legend> <div> <label for=\"nombre_alumno\" class=\"\
-    form-label mt-4\">Nombre</label> <input type=\"tel\" class=\"form-control\" id=\"\
+    form-label mt-4\">Nombre</label> <input type=\"text\" class=\"form-control\" id=\"\
     nombre_alumno\" name=\"nombre\" required placeholder=\"Introduce el nombre del\
     \ alumno - obligatorio.\"> </div> <div> <label for=\"correo_alumno\" class=\"\
     form-label mt-4\">Correo Electronico</label> <input type=\"email\" class=\"form-control\"\
@@ -108,6 +108,55 @@ TEMPLATES:
     btn btn-warning btn-sm\">Recargar Comedor</a> para descargar el men\xFA desde\
     \ EuskadiTech <h2>Compartir datos con el soporte tecnico</h2> <a href=\"/aula/~CODIGO_AULA~/export\"\
     \ class=\"btn btn-warning\">Exportar todos los datos</a> </div> ~END_PAGE"
+  aula/-/tareas.html: "START_PAGE~NAVBAR_AULA_LOCAL~ <div class=\"container\" style=\"\
+    padding-top: 60px;\"> <h1>Tareas</h1> <table class=\"table table-hover\"> <thead>\
+    \ <tr class=\"table-success\"> <th scope=\"col\">Tarea</th> <th scope=\"col\"\
+    >Hoy</th> <th scope=\"col\">Configuraci\xF3n</th> <th scope=\"col\">Acci\xF3nes</th>\
+    \ </tr> </thead> <tbody> <tr> <th colspan=\"4\"><a href=\"tareas/new\">Crear Tarea</a></th>\
+    \ </tr> ~LISTA_TAREAS~ </tbody> </table> </div> ~END_PAGE"
+  aula/-/tareas/-.html: 'START_PAGE~NAVBAR_AULA_LOCAL~ <div class="container" style="padding-top:
+    60px;"> <h1>Editar Tarea</h1> <form method="post"> <fieldset> <legend>Tarea: ~TAREA_TIPO~:
+    ~TAREA_NOMBRE~</legend> <div> <label for="tipo_tarea" class="form-label mt-4">Tipo</label>
+    <input type="text" class="form-control" id="tipo_tarea" value="~TAREA_TIPO~" name="tipo"
+    placeholder="Introduce el tipo o categoria de la tarea (p.e. Cocina)"> </div>
+    <div> <label for="nombre_tarea" class="form-label mt-4">Nombre</label> <input
+    type="text" class="form-control" id="nombre_tarea" value="~TAREA_NOMBRE~" name="nombre"
+    placeholder="Introduce el nombre de la tarea (p.e. Fregar los platos)"> </div>
+    <br> ~CHECK_ALUMNOS~ <br> <button type="submit" class="btn btn-primary">Guardar</button>
+    </fieldset> </form> </div> ~END_PAGE'
+  aula/-/tareas/new.html: "START_PAGE~NAVBAR_AULA_LOCAL~ <div class=\"container\"\
+    \ style=\"padding-top: 60px;\"> <h1>Editar Tarea</h1> <form method=\"post\"> <fieldset>\
+    \ <legend>Tarea: Nueva</legend> Si no entiendes algo de aqu\xED, Abre el <a href=\"\
+    https://hastebin.skyra.pw/raw/osezelafub\" target=\"_blank\" class=\"btn btn-warning\
+    \ btn-sm\">Manual de Tareas</a> <div> <label for=\"tipo_tarea\" class=\"form-label\
+    \ mt-4\">Tipo</label> <input type=\"text\" class=\"form-control\" id=\"tipo_tarea\"\
+    \ name=\"tipo\" placeholder=\"Introduce el tipo o categoria de la tarea (p.e.\
+    \ Cocina)\"> </div> <div> <label for=\"nombre_tarea\" class=\"form-label mt-4\"\
+    >Nombre</label> <input type=\"text\" class=\"form-control\" id=\"nombre_tarea\"\
+    \ name=\"nombre\" placeholder=\"Introduce el nombre de la tarea (p.e. Fregar los\
+    \ platos)\"> </div> <br> Dias de la semana en los que se elige un alumno <div\
+    \ class=\"form-check\"><input class=\"form-check-input\" type=\"checkbox\" value=\"\
+    1\" id=\"cw-1\" name=\"dow\"><label class=\"form-check-label\" for=\"cw-1\">Lunes</label></div>\
+    \ <div class=\"form-check\"><input class=\"form-check-input\" type=\"checkbox\"\
+    \ value=\"2\" id=\"cw-2\" name=\"dow\"><label class=\"form-check-label\" for=\"\
+    cw-2\">Martes</label></div> <div class=\"form-check\"><input class=\"form-check-input\"\
+    \ type=\"checkbox\" value=\"3\" id=\"cw-3\" name=\"dow\"><label class=\"form-check-label\"\
+    \ for=\"cw-3\">Miercoles</label></div> <div class=\"form-check\"><input class=\"\
+    form-check-input\" type=\"checkbox\" value=\"4\" id=\"cw-4\" name=\"dow\"><label\
+    \ class=\"form-check-label\" for=\"cw-4\">Jueves</label></div> <div class=\"form-check\"\
+    ><input class=\"form-check-input\" type=\"checkbox\" value=\"5\" id=\"cw-5\" name=\"\
+    dow\"><label class=\"form-check-label\" for=\"cw-5\">Viernes</label></div> <div\
+    \ class=\"form-check\"><input class=\"form-check-input\" type=\"checkbox\" value=\"\
+    6\" id=\"cw-6\" name=\"dow\"><label class=\"form-check-label\" for=\"cw-6\">Sabado</label></div>\
+    \ <div class=\"form-check\"><input class=\"form-check-input\" type=\"checkbox\"\
+    \ value=\"7\" id=\"cw-7\" name=\"dow\"><label class=\"form-check-label\" for=\"\
+    cw-7\">Domingo</label></div> <br> <div> <label for=\"dif\" class=\"form-label\
+    \ mt-4\">Diferencia</label> <input type=\"number\" class=\"form-control\" id=\"\
+    dif\" name=\"dif\" placeholder=\"Introduce la diferencia desde el primer dia.\"\
+    > <b>Si esta tarea es una de varias dentro de un tipo, deberias ir incrementando\
+    \ este numero por cada tarea</b> </div> <br> Alumnos a mostrar ~CHECK_ALUMNOS~\
+    \ <br> <button type=\"submit\" class=\"btn btn-primary\">Guardar</button> </fieldset>\
+    \ </form> </div> ~END_PAGE"
   aula/NAVBAR_AULA.html: <nav class="navbar navbar-expand-lg bg-success" data-bs-theme="dark">
     <div class="container"> <a class="navbar-brand" href="/aula">Axel Aula</a> <button
     class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarColor01"
@@ -125,7 +174,8 @@ TEMPLATES:
     id="navbarColor01"> <ul class="navbar-nav me-auto"> <li class="nav-item"> <a class="nav-link"
     href="/aula/~CODIGO_AULA~">Inicio</a> </li> <li class="nav-item"> <a class="nav-link"
     href="/aula/~CODIGO_AULA~/alumnos">Alumnos</a> </li> <li class="nav-item"> <a
-    class="nav-link" href="/aula/~CODIGO_AULA~/menu-comedor">Menu Comedor</a> </li>
+    class="nav-link" href="/aula/~CODIGO_AULA~/tareas">Tareas</a> </li> <li class="nav-item">
+    <a class="nav-link" href="/aula/~CODIGO_AULA~/menu-comedor">Menu Comedor</a> </li>
     <li class="nav-item"> <a class="nav-link" href="/aula/~CODIGO_AULA~/soporte-tecnico">Soporte
     Tecnico</a> </li> </ul> <div class="d-flex"> <a class="btn btn-secondary my-2
     my-sm-0" href="/">Volver a inicio</a> </div> </div> </div> </nav>
