@@ -59,7 +59,7 @@ TEMPLATES:
     padding-top: 60px;\"> <h1>Editar Alumno</h1> <form method=\"post\"> <fieldset>\
     \ <legend>Alumno: ~ALUMNO_NOMBRE~</legend> <div> <label for=\"nombre_alumno\"\
     \ class=\"form-label mt-4\">Nombre</label> <input type=\"text\" class=\"form-control\"\
-    \ id=\"nombre_alumno\" value=\"~ALUMNO_NOMBRE~\" name=\"nombre\" placeholder=\"\
+    \ id=\"nombre_alumno\" value=\"~ALUMNO_NOMBRE~\" name=\"nombre\" required placeholder=\"\
     Introduce el nombre del alumno - obligatorio.\"> </div> <div> <label for=\"correo_alumno\"\
     \ class=\"form-label mt-4\">Correo Electronico</label> <input type=\"email\" class=\"\
     form-control\" id=\"correo_alumno\" name=\"correo\" value=\"~ALUMNO_CORREO~\"\
@@ -91,7 +91,10 @@ TEMPLATES:
     btn btn-primary\">Guardar</button> </fieldset> </form> </div> ~END_PAGE"
   aula/-/index.html: 'START_PAGE~NAVBAR_AULA_LOCAL~ <div class="container" style="padding-top:
     60px;"> <h1>Aula: ~CODIGO_AULA~</h1> <a href="/aula/~CODIGO_AULA~_edit" class="btn
-    btn-warning">Editar</a> </div> ~END_PAGE'
+    btn-warning">Editar</a> <h2>Hoy toca de comer</h2> <h4>~MENU_COMEDOR_HOY~</h4>
+    <h2>Tareas</h2> <table class="table table-hover"> <thead> <tr class="table-success">
+    <th scope="col">Tarea</th> <th scope="col">Hoy le toca a</th> </tr> </thead> <tbody>
+    ~LISTA_TAREAS_MIN~ </tbody> </table> </div> ~END_PAGE'
   aula/-/menu-comedor.html: "START_PAGE~NAVBAR_AULA_LOCAL~ <div class=\"container\"\
     \ style=\"padding-top: 60px;\"> <h1>Menu Comedor</h1> <h2>Hoy</h2> <b>~MENU_COMEDOR_HOY~</b>\
     \ <h2>Mantenimiento</h2> <b>En el primer dia del mes: </b> Si no ves los datos\
@@ -111,52 +114,44 @@ TEMPLATES:
   aula/-/tareas.html: "START_PAGE~NAVBAR_AULA_LOCAL~ <div class=\"container\" style=\"\
     padding-top: 60px;\"> <h1>Tareas</h1> <table class=\"table table-hover\"> <thead>\
     \ <tr class=\"table-success\"> <th scope=\"col\">Tarea</th> <th scope=\"col\"\
-    >Hoy</th> <th scope=\"col\">Configuraci\xF3n</th> <th scope=\"col\">Acci\xF3nes</th>\
-    \ </tr> </thead> <tbody> <tr> <th colspan=\"4\"><a href=\"tareas/new\">Crear Tarea</a></th>\
-    \ </tr> ~LISTA_TAREAS~ </tbody> </table> </div> ~END_PAGE"
+    >Hoy le toca a</th> <th scope=\"col\">Configuraci\xF3n</th> <th scope=\"col\"\
+    >Acci\xF3nes</th> </tr> </thead> <tbody> <tr> <th colspan=\"4\"><a href=\"tareas/new\"\
+    >Crear Tarea</a></th> </tr> ~LISTA_TAREAS~ </tbody> </table> </div> ~END_PAGE"
   aula/-/tareas/-.html: 'START_PAGE~NAVBAR_AULA_LOCAL~ <div class="container" style="padding-top:
-    60px;"> <h1>Editar Tarea</h1> <form method="post"> <fieldset> <legend>Tarea: ~TAREA_TIPO~:
-    ~TAREA_NOMBRE~</legend> <div> <label for="tipo_tarea" class="form-label mt-4">Tipo</label>
-    <input type="text" class="form-control" id="tipo_tarea" value="~TAREA_TIPO~" name="tipo"
-    placeholder="Introduce el tipo o categoria de la tarea (p.e. Cocina)"> </div>
-    <div> <label for="nombre_tarea" class="form-label mt-4">Nombre</label> <input
-    type="text" class="form-control" id="nombre_tarea" value="~TAREA_NOMBRE~" name="nombre"
-    placeholder="Introduce el nombre de la tarea (p.e. Fregar los platos)"> </div>
-    <br> ~CHECK_ALUMNOS~ <br> <button type="submit" class="btn btn-primary">Guardar</button>
-    </fieldset> </form> </div> ~END_PAGE'
+    60px;"> <h1>Editar Tarea</h1> <h2>No se puede editar una tarea.</h2> </div> ~END_PAGE'
   aula/-/tareas/new.html: "START_PAGE~NAVBAR_AULA_LOCAL~ <div class=\"container\"\
     \ style=\"padding-top: 60px;\"> <h1>Editar Tarea</h1> <form method=\"post\"> <fieldset>\
     \ <legend>Tarea: Nueva</legend> Si no entiendes algo de aqu\xED, Abre el <a href=\"\
-    https://hastebin.skyra.pw/raw/osezelafub\" target=\"_blank\" class=\"btn btn-warning\
+    https://tech.eus/axis/link/M015.html\" target=\"_blank\" class=\"btn btn-warning\
     \ btn-sm\">Manual de Tareas</a> <div> <label for=\"tipo_tarea\" class=\"form-label\
     \ mt-4\">Tipo</label> <input type=\"text\" class=\"form-control\" id=\"tipo_tarea\"\
-    \ name=\"tipo\" placeholder=\"Introduce el tipo o categoria de la tarea (p.e.\
-    \ Cocina)\"> </div> <div> <label for=\"nombre_tarea\" class=\"form-label mt-4\"\
-    >Nombre</label> <input type=\"text\" class=\"form-control\" id=\"nombre_tarea\"\
-    \ name=\"nombre\" placeholder=\"Introduce el nombre de la tarea (p.e. Fregar los\
-    \ platos)\"> </div> <br> Dias de la semana en los que se elige un alumno <div\
-    \ class=\"form-check\"><input class=\"form-check-input\" type=\"checkbox\" value=\"\
-    1\" id=\"cw-1\" name=\"dow\"><label class=\"form-check-label\" for=\"cw-1\">Lunes</label></div>\
+    \ name=\"tipo\" required placeholder=\"Introduce el tipo o categoria de la tarea\
+    \ (p.e. Cocina)\"> </div> <div> <label for=\"nombre_tarea\" class=\"form-label\
+    \ mt-4\">Nombre</label> <input type=\"text\" class=\"form-control\" id=\"nombre_tarea\"\
+    \ name=\"nombre\" required placeholder=\"Introduce el nombre de la tarea (p.e.\
+    \ Fregar los platos)\"> </div> <br> Dias de la semana en los que se elige un alumno\
     \ <div class=\"form-check\"><input class=\"form-check-input\" type=\"checkbox\"\
-    \ value=\"2\" id=\"cw-2\" name=\"dow\"><label class=\"form-check-label\" for=\"\
-    cw-2\">Martes</label></div> <div class=\"form-check\"><input class=\"form-check-input\"\
-    \ type=\"checkbox\" value=\"3\" id=\"cw-3\" name=\"dow\"><label class=\"form-check-label\"\
-    \ for=\"cw-3\">Miercoles</label></div> <div class=\"form-check\"><input class=\"\
-    form-check-input\" type=\"checkbox\" value=\"4\" id=\"cw-4\" name=\"dow\"><label\
-    \ class=\"form-check-label\" for=\"cw-4\">Jueves</label></div> <div class=\"form-check\"\
-    ><input class=\"form-check-input\" type=\"checkbox\" value=\"5\" id=\"cw-5\" name=\"\
-    dow\"><label class=\"form-check-label\" for=\"cw-5\">Viernes</label></div> <div\
-    \ class=\"form-check\"><input class=\"form-check-input\" type=\"checkbox\" value=\"\
-    6\" id=\"cw-6\" name=\"dow\"><label class=\"form-check-label\" for=\"cw-6\">Sabado</label></div>\
+    \ value=\"1\" id=\"cw-1\" name=\"dow\"><label class=\"form-check-label\" for=\"\
+    cw-1\">Lunes</label></div> <div class=\"form-check\"><input class=\"form-check-input\"\
+    \ type=\"checkbox\" value=\"2\" id=\"cw-2\" name=\"dow\"><label class=\"form-check-label\"\
+    \ for=\"cw-2\">Martes</label></div> <div class=\"form-check\"><input class=\"\
+    form-check-input\" type=\"checkbox\" value=\"3\" id=\"cw-3\" name=\"dow\"><label\
+    \ class=\"form-check-label\" for=\"cw-3\">Miercoles</label></div> <div class=\"\
+    form-check\"><input class=\"form-check-input\" type=\"checkbox\" value=\"4\" id=\"\
+    cw-4\" name=\"dow\"><label class=\"form-check-label\" for=\"cw-4\">Jueves</label></div>\
     \ <div class=\"form-check\"><input class=\"form-check-input\" type=\"checkbox\"\
-    \ value=\"7\" id=\"cw-7\" name=\"dow\"><label class=\"form-check-label\" for=\"\
-    cw-7\">Domingo</label></div> <br> <div> <label for=\"dif\" class=\"form-label\
-    \ mt-4\">Diferencia</label> <input type=\"number\" class=\"form-control\" id=\"\
-    dif\" name=\"dif\" placeholder=\"Introduce la diferencia desde el primer dia.\"\
-    > <b>Si esta tarea es una de varias dentro de un tipo, deberias ir incrementando\
-    \ este numero por cada tarea</b> </div> <br> Alumnos a mostrar ~CHECK_ALUMNOS~\
-    \ <br> <button type=\"submit\" class=\"btn btn-primary\">Guardar</button> </fieldset>\
-    \ </form> </div> ~END_PAGE"
+    \ value=\"5\" id=\"cw-5\" name=\"dow\"><label class=\"form-check-label\" for=\"\
+    cw-5\">Viernes</label></div> <div class=\"form-check\"><input class=\"form-check-input\"\
+    \ type=\"checkbox\" value=\"6\" id=\"cw-6\" name=\"dow\"><label class=\"form-check-label\"\
+    \ for=\"cw-6\">Sabado</label></div> <div class=\"form-check\"><input class=\"\
+    form-check-input\" type=\"checkbox\" value=\"7\" id=\"cw-7\" name=\"dow\"><label\
+    \ class=\"form-check-label\" for=\"cw-7\">Domingo</label></div> <br> <div> <label\
+    \ for=\"dif\" class=\"form-label mt-4\">Diferencia</label> <input type=\"number\"\
+    \ class=\"form-control\" id=\"dif\" name=\"dif\" required placeholder=\"Introduce\
+    \ la diferencia desde el primer dia.\"> <b>Si esta tarea es una de varias dentro\
+    \ de un tipo, deberias ir incrementando este numero por cada tarea</b> </div>\
+    \ <br> Alumnos a mostrar ~CHECK_ALUMNOS~ <br> <button type=\"submit\" class=\"\
+    btn btn-primary\">Guardar</button> </fieldset> </form> </div> ~END_PAGE"
   aula/NAVBAR_AULA.html: <nav class="navbar navbar-expand-lg bg-success" data-bs-theme="dark">
     <div class="container"> <a class="navbar-brand" href="/aula">Axel Aula</a> <button
     class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarColor01"
@@ -208,16 +203,16 @@ TEMPLATES:
     /aula_open\" method=\"get\"> <fieldset> <label for=\"pin\" class=\"form-label\
     \ mt-4\">Ir a un aula</label> <div class=\"input-group mb-3\"> <input type=\"\
     text\" name=\"pin\" class=\"form-control\" id=\"pin\" aria-describedby=\"button-addon2\"\
-    \ autocomplete=\"off\" placeholder=\"Codigo del aula\"> <button class=\"btn btn-primary\"\
-    \ type=\"submit\" id=\"button-addon2\">Ir</button> <a class=\"btn btn-primary\"\
-    \ href=\"/aula\">Lista</a> </div> </fieldset> </form> </div> </div> <div class=\"\
-    card text-white bg-danger mb-3 p-3 m-2\" style=\"width: 25rem; text-decoration:\
-    \ none;\"> <div class=\"card-body\"> <h4 class=\"card-title\">Administraci\xF3\
-    n</h4> <p class=\"card-text\">Configuraci\xF3n para administradores</p> <form\
-    \ action=\"/admin\" method=\"get\"> <fieldset> <label for=\"pin\" class=\"form-label\
-    \ mt-4\">PIN de administrador</label> <div class=\"input-group mb-3\"> <input\
-    \ type=\"password\" name=\"pin\" class=\"form-control\" id=\"pin\" aria-describedby=\"\
-    button-addon2\" autocomplete=\"off\" placeholder=\"Configurado en config.yaml\"\
+    \ required autocomplete=\"off\" placeholder=\"Codigo del aula\"> <button class=\"\
+    btn btn-primary\" type=\"submit\" id=\"button-addon2\">Ir</button> <a class=\"\
+    btn btn-primary\" href=\"/aula\">Lista</a> </div> </fieldset> </form> </div> </div>\
+    \ <div class=\"card text-white bg-danger mb-3 p-3 m-2\" style=\"width: 25rem;\
+    \ text-decoration: none;\"> <div class=\"card-body\"> <h4 class=\"card-title\"\
+    >Administraci\xF3n</h4> <p class=\"card-text\">Configuraci\xF3n para administradores</p>\
+    \ <form action=\"/admin\" method=\"get\"> <fieldset> <label for=\"pin\" class=\"\
+    form-label mt-4\">PIN de administrador</label> <div class=\"input-group mb-3\"\
+    > <input type=\"password\" name=\"pin\" class=\"form-control\" id=\"pin\" aria-describedby=\"\
+    button-addon2\" autocomplete=\"off\" required placeholder=\"Configurado en config.yaml\"\
     > <button class=\"btn btn-primary\" type=\"submit\" id=\"button-addon2\">Ir</button>\
     \ </div> </fieldset> </form> </div> </div> <a class=\"card text-white bg-primary\
     \ mb-3 p-3 m-2\" style=\"width: 25rem; text-decoration: none;\" href=\"/\"> <div\

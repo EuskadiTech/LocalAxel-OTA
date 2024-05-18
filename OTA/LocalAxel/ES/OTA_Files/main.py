@@ -3,6 +3,14 @@ from pysondb import db
 from datetime import datetime
 from utils import requests, ota_updater
 import yaml
+from datetime import datetime, timedelta
+
+def contar_dias_laborables(fecha_inicio: str, wd: list):
+    hoy = datetime.now()
+    desde_fecha = datetime.fromisoformat(fecha_inicio)
+    desde_dia = (hoy - desde_fecha).days
+    dias_laborables = sum(1 for i in range(desde_dia) if (desde_fecha + timedelta(days=i)).weekday() in wd)
+    return dias_laborables
 
 config: dict = yaml.safe_load(open("config.yaml"))
 templates = yaml.safe_load(open("OTA_Files/templates.yaml"))
@@ -39,6 +47,11 @@ async def static(req, file: str):
     with open(f"{FOLDER_NAME}/static__" + "__".join(f), "rb") as f:
         return f.read()
 
+def tareas_makehoy(id: int):
+    t = db_autotareas.getById(id)
+    tot = contar_dias_laborables(t["start"], [int(i) for i in t["dow"]]) + int(t["dif"])
+    mod = len(t["alumno"])
+    return t["alumno"][tot % mod]
 
 def build_page(template_file: list, modo: str = "default", **kwargs):
     template = read(template_file).split("~")
@@ -93,7 +106,15 @@ def build_page(template_file: list, modo: str = "default", **kwargs):
         elif value == "LISTA_TAREAS":
             tareas = db_autotareas.getByQuery({"aula": kwargs["aula"].upper()})
             alumnos_output = [
-                f'<tr><th scope="row"><a href="tareas/{alumno["id"]}">{alumno["tipo"]}: {alumno["nombre"]}</a></td><td>{" > ".join(alumno["alumno"])}</td><td><a class="btn btn-danger" href="tareas/{alumno["id"]}/delete">Borrar</a></td></tr>'
+                f'<tr><th scope="row"><a href="tareas/{alumno["id"]}">{alumno["tipo"]}: {alumno["nombre"]}</a></td><td>{tareas_makehoy(alumno["id"])}</td><td>{" > ".join(alumno["alumno"])}</td><td><a class="btn btn-danger" href="tareas/{alumno["id"]}/delete">Borrar</a></td></tr>'
+                for alumno in tareas
+            ]
+            output += alumnos_output
+            continue
+        elif value == "LISTA_TAREAS_MIN":
+            tareas = db_autotareas.getByQuery({"aula": kwargs["aula"].upper()})
+            alumnos_output = [
+                f'<tr><th scope="row"><a href="tareas/{alumno["id"]}">{alumno["tipo"]}: {alumno["nombre"]}</a></td><td>{tareas_makehoy(alumno["id"])}</td></tr>'
                 for alumno in tareas
             ]
             output += alumnos_output
@@ -153,13 +174,14 @@ def build_page(template_file: list, modo: str = "default", **kwargs):
 @app.get("/aula/<aula>")
 async def aula__index(req, aula: str):
     aula = aula.upper()
+    hoy_iso = datetime.today().isoformat().split("T")[0]
     if aula == "NEW":
         return "".join(build_page("aula/new.html", aula=aula)), HEADERS
     elif "_EDIT" in aula:
         eaula=aula.replace("_EDIT", "")
         return "".join(build_page("aula/edit.html", modo="edit_aula", aula=eaula)), HEADERS
 
-    return "".join(build_page("aula/-/index.html", aula=aula)), HEADERS
+    return "".join(build_page("aula/-/index.html", aula=aula, hoy=menu.get(hoy_iso, "Hoy no hay comedor, o no se ha descargado el menu."))), HEADERS
 
 
 @app.get("/aula")
@@ -273,6 +295,7 @@ async def aula__tareas__post(req, aula: str, id):
                 "dow": req.form.getlist("dow") or [],
                 "dif": req.form["dif"] or "0",
                 "aula": aula,
+                "start": "2024-05-18",
             }
         )
     else:
@@ -285,6 +308,7 @@ async def aula__tareas__post(req, aula: str, id):
                 "dow": req.form.getlist("dow") or [],
                 "dif": req.form["dif"] or "0",
                 "aula": aula,
+                "start": "2024-05-18",
             }
         )
 

@@ -13,7 +13,7 @@ START_PAGE~
                         <label for="pin" class="form-label mt-4">Ir a un aula</label>
                         <div class="input-group mb-3">
                             <input type="text" name="pin" class="form-control" id="pin" aria-describedby="button-addon2"
-                                autocomplete="off" placeholder="Codigo del aula">
+                                required autocomplete="off" placeholder="Codigo del aula">
                             <button class="btn btn-primary" type="submit" id="button-addon2">Ir</button>
                             <a class="btn btn-primary" href="/aula">Lista</a>
                         </div>
@@ -30,7 +30,7 @@ START_PAGE~
                         <label for="pin" class="form-label mt-4">PIN de administrador</label>
                         <div class="input-group mb-3">
                             <input type="password" name="pin" class="form-control" id="pin"
-                                aria-describedby="button-addon2" autocomplete="off"
+                                aria-describedby="button-addon2" autocomplete="off" required
                                 placeholder="Configurado en config.yaml">
                             <button class="btn btn-primary" type="submit" id="button-addon2">Ir</button>
                         </div>

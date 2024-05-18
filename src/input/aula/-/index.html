@@ -2,5 +2,21 @@ START_PAGE~NAVBAR_AULA_LOCAL~
 <div class="container" style="padding-top: 60px;">
     <h1>Aula: ~CODIGO_AULA~</h1>
     <a href="/aula/~CODIGO_AULA~_edit" class="btn btn-warning">Editar</a>
+
+    <h2>Hoy toca de comer</h2>
+
+    <h4>~MENU_COMEDOR_HOY~</h4>
+    <h2>Tareas</h2>
+    <table class="table table-hover">
+        <thead>
+            <tr class="table-success">
+                <th scope="col">Tarea</th>
+                <th scope="col">Hoy le toca a</th>
+            </tr>
+        </thead>
+        <tbody>
+            ~LISTA_TAREAS_MIN~
+        </tbody>
+    </table>
 </div>
 ~END_PAGE
