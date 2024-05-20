@@ -51,7 +51,7 @@ def tareas_makehoy(id: int):
     t = db_autotareas.getById(id)
     tot = contar_dias_laborables(t["start"], [int(i) for i in t["dow"]]) + int(t["dif"])
     mod = len(t["alumno"])
-    if datetime.now().isoweekday() in t["dow"]:
+    if datetime.now().isoweekday() in [int(i) for i in t["dow"]]:
         return t["alumno"][tot % mod]
     return ""
 def build_page(template_file: list, modo: str = "default", **kwargs):
