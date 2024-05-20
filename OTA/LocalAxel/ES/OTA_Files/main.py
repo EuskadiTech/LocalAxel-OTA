@@ -51,8 +51,9 @@ def tareas_makehoy(id: int):
     t = db_autotareas.getById(id)
     tot = contar_dias_laborables(t["start"], [int(i) for i in t["dow"]]) + int(t["dif"])
     mod = len(t["alumno"])
-    return t["alumno"][tot % mod]
-
+    if datetime.hoy().isoweekday() in t["dow"]:
+        return t["alumno"][tot % mod]
+    return ""
 def build_page(template_file: list, modo: str = "default", **kwargs):
     template = read(template_file).split("~")
     output = []
@@ -106,7 +107,7 @@ def build_page(template_file: list, modo: str = "default", **kwargs):
         elif value == "LISTA_TAREAS":
             tareas = db_autotareas.getByQuery({"aula": kwargs["aula"].upper()})
             alumnos_output = [
-                f'<tr><th scope="row"><a href="tareas/{alumno["id"]}">{alumno["tipo"]}: {alumno["nombre"]}</a></td><td>{tareas_makehoy(alumno["id"])}</td><td>{" > ".join(alumno["alumno"])}</td><td><a class="btn btn-danger" href="tareas/{alumno["id"]}/delete">Borrar</a></td></tr>'
+                f'<tr><th scope="row"><a href="tareas/{alumno["id"]}">{alumno["tipo"]}: {alumno["nombre"]}</a></td><td>{tareas_makehoy(alumno["id"])}</td><td>{", ".join(alumno["alumno"])}</td><td><a class="btn btn-danger" href="tareas/{alumno["id"]}/delete">Borrar</a></td></tr>'
                 for alumno in tareas
             ]
             output += alumnos_output
