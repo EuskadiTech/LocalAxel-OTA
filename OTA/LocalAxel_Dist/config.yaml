@@ -13,5 +13,6 @@ OTA_URL_Prefix: "https://euskaditech-ota.netlify.app/OTA/LocalAxel/ES/{}"
 OTA_Disable: False
 
 ### Menu Comedor
+# Solicita el menu del comedor desde https://tech.eus/axis/link/localaxel/solicitar_comedor.html
 Menu_URL: "https://euskaditech-ota.netlify.app/OTA/Comedor/test.json"
 Menu_Disable: False
