@@ -114,8 +114,8 @@ TEMPLATES:
   aula/-/tareas.html: "START_PAGE~NAVBAR_AULA_LOCAL~ <div class=\"container\" style=\"\
     padding-top: 60px;\"> <h1>Tareas</h1> <table class=\"table table-hover\"> <thead>\
     \ <tr class=\"table-success\"> <th scope=\"col\">Tarea</th> <th scope=\"col\"\
-    >Hoy le toca a</th> <th scope=\"col\">Alumnos</th> <th scope=\"col\"\
-    >Acci\xF3nes</th> </tr> </thead> <tbody> <tr> <th colspan=\"4\"><a href=\"tareas/new\"\
+    >Hoy le toca a</th> <th scope=\"col\">Ajustes</th> <th scope=\"col\">Acci\xF3\
+    nes</th> </tr> </thead> <tbody> <tr> <th colspan=\"4\"><a href=\"tareas/new\"\
     >Crear Tarea</a></th> </tr> ~LISTA_TAREAS~ </tbody> </table> </div> ~END_PAGE"
   aula/-/tareas/-.html: 'START_PAGE~NAVBAR_AULA_LOCAL~ <div class="container" style="padding-top:
     60px;"> <h1>Editar Tarea</h1> <h2>No se puede editar una tarea.</h2> </div> ~END_PAGE'
@@ -198,24 +198,24 @@ TEMPLATES:
     \ <h1>Local Axel</h1> <div class=\"d-flex flex-row flex-wrap\"> <div class=\"\
     card text-white bg-success mb-3 p-3 m-2\" style=\"width: 25rem; text-decoration:\
     \ none;\" href=\"/aula\"> <div class=\"card-body\"> <h4 class=\"card-title\">Axel\
-    \ Aula</h4> <p class=\"card-text\">El programa para automatizar el aula.</p> <p\
-    \ class=\"card-text\">Configuraci\xF3n para administradores</p> <form action=\"\
-    /aula_open\" method=\"get\"> <fieldset> <label for=\"pin\" class=\"form-label\
-    \ mt-4\">Ir a un aula</label> <div class=\"input-group mb-3\"> <input type=\"\
-    text\" name=\"pin\" class=\"form-control\" id=\"pin\" aria-describedby=\"button-addon2\"\
-    \ required autocomplete=\"off\" placeholder=\"Codigo del aula\"> <button class=\"\
-    btn btn-primary\" type=\"submit\" id=\"button-addon2\">Ir</button> <a class=\"\
-    btn btn-primary\" href=\"/aula\">Lista</a> </div> </fieldset> </form> </div> </div>\
-    \ <div class=\"card text-white bg-danger mb-3 p-3 m-2\" style=\"width: 25rem;\
-    \ text-decoration: none;\"> <div class=\"card-body\"> <h4 class=\"card-title\"\
-    >Administraci\xF3n</h4> <p class=\"card-text\">Configuraci\xF3n para administradores</p>\
-    \ <form action=\"/admin\" method=\"get\"> <fieldset> <label for=\"pin\" class=\"\
-    form-label mt-4\">PIN de administrador</label> <div class=\"input-group mb-3\"\
-    > <input type=\"password\" name=\"pin\" class=\"form-control\" id=\"pin\" aria-describedby=\"\
-    button-addon2\" autocomplete=\"off\" required placeholder=\"Configurado en config.yaml\"\
+    \ Aula</h4> <p class=\"card-text\">El programa para automatizar el aula.</p> <form\
+    \ action=\"/aula_open\" method=\"get\"> <fieldset> <label for=\"pin\" class=\"\
+    form-label mt-4\">Ir a un aula</label> <div class=\"input-group mb-3\"> <input\
+    \ type=\"text\" name=\"pin\" class=\"form-control\" id=\"pin\" aria-describedby=\"\
+    button-addon2\" required autocomplete=\"off\" placeholder=\"Codigo del aula\"\
     > <button class=\"btn btn-primary\" type=\"submit\" id=\"button-addon2\">Ir</button>\
-    \ </div> </fieldset> </form> </div> </div> <a class=\"card text-white bg-primary\
-    \ mb-3 p-3 m-2\" style=\"width: 25rem; text-decoration: none;\" href=\"/\"> <div\
-    \ class=\"card-body\"> <h4 class=\"card-title\">Axel Smart</h4> <p class=\"card-text\"\
-    >Multiples aplicaci\xF3nes para crear tu propia IA.<br>Por el momento no esta\
-    \ disponible.</p> </div> </a> </div> </div> ~END_PAGE"
+    \ <a class=\"btn btn-primary\" href=\"/aula\">Lista</a> </div> </fieldset> </form>\
+    \ </div> </div> <div class=\"card text-white bg-danger mb-3 p-3 m-2\" style=\"\
+    width: 25rem; text-decoration: none;\"> <div class=\"card-body\"> <h4 class=\"\
+    card-title\">Administraci\xF3n</h4> <p class=\"card-text\">Configuraci\xF3n para\
+    \ administradores</p> <form action=\"/admin\" method=\"get\"> <fieldset> <label\
+    \ for=\"pin\" class=\"form-label mt-4\">PIN de administrador</label> <div class=\"\
+    input-group mb-3\"> <input type=\"password\" name=\"pin\" class=\"form-control\"\
+    \ id=\"pin\" aria-describedby=\"button-addon2\" autocomplete=\"off\" required\
+    \ placeholder=\"Configurado en config.yaml\"> <button class=\"btn btn-primary\"\
+    \ type=\"submit\" id=\"button-addon2\">Ir</button> </div> </fieldset> </form>\
+    \ </div> </div> <a class=\"card text-white bg-primary mb-3 p-3 m-2\" style=\"\
+    width: 25rem; text-decoration: none;\" href=\"/\"> <div class=\"card-body\"> <h4\
+    \ class=\"card-title\">Axel Smart</h4> <p class=\"card-text\">Multiples aplicaci\xF3\
+    nes para crear tu propia IA.<br>Por el momento no esta disponible.</p> </div>\
+    \ </a> </div> </div> ~END_PAGE"

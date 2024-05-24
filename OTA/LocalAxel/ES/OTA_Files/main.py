@@ -105,9 +105,10 @@ def build_page(template_file: list, modo: str = "default", **kwargs):
             output += alumnos_output
             continue
         elif value == "LISTA_TAREAS":
+            dow = ["", "Lunes", "Martes", "Miercoles", "Jueves", "Viernes", "Sabado", "Domingo"]
             tareas = db_autotareas.getByQuery({"aula": kwargs["aula"].upper()})
             alumnos_output = [
-                f'<tr><th scope="row"><a href="tareas/{alumno["id"]}">{alumno["tipo"]}: {alumno["nombre"]}</a></td><td>{tareas_makehoy(alumno["id"])}</td><td>{", ".join(alumno["alumno"])}</td><td><a class="btn btn-danger" href="tareas/{alumno["id"]}/delete">Borrar</a></td></tr>'
+                f'<tr><th scope="row"><a href="tareas/{alumno["id"]}">{alumno["tipo"]}: {alumno["nombre"]}</a></td><td>{tareas_makehoy(alumno["id"])}</td><td>Alumnos: {", ".join(alumno["alumno"])}<br>Diferencia: {alumno["dif"]}<br>Dias de la semana: {", ".join(dow[alumno["alumno"]])}</td><td><a class="btn btn-danger" href="tareas/{alumno["id"]}/delete">Borrar</a></td></tr>'
                 for alumno in tareas
             ]
             output += alumnos_output
@@ -364,7 +365,7 @@ async def admin(req):
 @app.get("/admin/recargar_menu")
 async def admin__recargar_menu(req):
     reload_comedor()
-    return "Comedor Recargado, ya puedes cerrar esta pestaña."
+    return "<h1>Comedor Recargado, ya puedes cerrar esta pestaña.</h1>", HEADERS
 
 @app.get("/aula_open")
 async def aula_open(req):
