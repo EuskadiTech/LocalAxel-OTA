@@ -108,7 +108,7 @@ def build_page(template_file: list, modo: str = "default", **kwargs):
             dow = ["", "Lunes", "Martes", "Miercoles", "Jueves", "Viernes", "Sabado", "Domingo"]
             tareas = db_autotareas.getByQuery({"aula": kwargs["aula"].upper()})
             alumnos_output = [
-                f'<tr><th scope="row"><a href="tareas/{alumno["id"]}">{alumno["tipo"]}: {alumno["nombre"]}</a></td><td>{tareas_makehoy(alumno["id"])}</td><td>Alumnos: {", ".join(alumno["alumno"])}<br>Diferencia: {alumno["dif"]}<br>Dias de la semana: {", ".join(dow[alumno["alumno"]])}</td><td><a class="btn btn-danger" href="tareas/{alumno["id"]}/delete">Borrar</a></td></tr>'
+                f'<tr><th scope="row"><a href="tareas/{alumno["id"]}">{alumno["tipo"]}: {alumno["nombre"]}</a></td><td>{tareas_makehoy(alumno["id"])}</td><td>Alumnos: {", ".join(alumno["alumno"])}<br>Diferencia: {alumno["dif"]}<br>Dias de la semana: {", ".join([dow[d] for d in alumno["dow"])}</td><td><a class="btn btn-danger" href="tareas/{alumno["id"]}/delete">Borrar</a></td></tr>'
                 for alumno in tareas
             ]
             output += alumnos_output
