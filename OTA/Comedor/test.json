@@ -1,5 +1,5 @@
 {
   "ERROR": "El menu comedor no está configurado con una URL valida",
   "INFO": "Debes solicitar al administrador que configure y/o solicite la URL del comedor.",
-  "Para administradores": "Si eres administrador de LocalAxel: Solicita una URL de comedor o usa una que ya exista. <a href=\"https://tech.eus/axis/link/localaxel/solicitar_comedor.html\" target=\"_blank\" class=\"btn btn-warning btn-sm\">Solicitar</a>"
+  "Para administradores": "Si eres administrador de LocalAxel: Solicita una URL de comedor o usa una que ya exista. <a href=\"https://tech.eus/axis/link/localaxel/solicitar_comedor.html\" target=\"_blank\" class=\"btn btn-warning btn-sm\">Acceder</a>"
 }
