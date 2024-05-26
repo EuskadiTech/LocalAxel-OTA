@@ -4,7 +4,7 @@ from datetime import datetime
 from utils import requests, ota_updater
 import yaml
 from datetime import datetime, timedelta
-
+from os import environ
 def contar_dias_laborables(fecha_inicio: str, wd: list):
     hoy = datetime.now()
     desde_fecha = datetime.fromisoformat(fecha_inicio)
@@ -12,13 +12,14 @@ def contar_dias_laborables(fecha_inicio: str, wd: list):
     dias_laborables = sum(1 for i in range(desde_dia) if (desde_fecha + timedelta(days=i)).weekday() in wd)
     return dias_laborables
 
-config: dict = yaml.safe_load(open("config.yaml"))
-templates = yaml.safe_load(open("OTA_Files/templates.yaml"))
+root = environ.get("DATA_PATH", "")
+config: dict = yaml.safe_load(open(root+"config.yaml"))
+templates = yaml.safe_load(open(root+"OTA_Files/templates.yaml"))
 
-db_alumnos = db.getDb("db.alumnos.json")
-db_aulas = db.getDb("db.aulas.json")
-db_autotareas = db.getDb("db.autotareas.json")
-db_smarts = db.getDb("db.smarts.json")
+db_alumnos = db.getDb(root+ "db.alumnos.json")
+db_aulas = db.getDb(root+"db.aulas.json")
+db_autotareas = db.getDb(root+"db.autotareas.json")
+db_smarts = db.getDb(root+"db.smarts.json")
 
 app = Microdot()
 
@@ -410,6 +411,9 @@ async def smart__index(req):
 @app.get("/smart/new")
 async def smart__new(req):
     return "".join(build_page("smart/new.html")), HEADERS
+@app.get("/smart/new/aviso")
+async def smart__new(req):
+    return "".join(build_page("smart/new/aviso.html")), HEADERS
 
 if __name__ == "__main__":
     reload_comedor()

@@ -25,6 +25,7 @@ TEMPLATES = [
     "smart/NAVBAR_SMART.html",
     "smart/index.html",
     "smart/new.html",
+    "smart/new/aviso.html",
     "NAVBAR_ADMIN.html",
     "index.html",
     "admin.html",
