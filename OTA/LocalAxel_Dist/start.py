@@ -1,6 +1,9 @@
 import utils
 import microdot as _1
 import pysondb as _2
+from os import environ
+
+root = environ.get("DATA_PATH", "")
 
 if __name__ == "__main__":
     utils.ota_updater()
@@ -16,4 +19,4 @@ if __name__ == "__main__":
     print(" http://127.0.0.1:17170/      ")
     print("==============================")
     print("                              ")
-    e = exec(open("OTA_Files/main.py").read())
+    e = exec(open(root + "OTA_Files/main.py").read())

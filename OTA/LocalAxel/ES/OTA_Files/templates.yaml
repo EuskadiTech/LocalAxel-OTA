@@ -122,17 +122,17 @@ TEMPLATES:
   aula/-/tareas/new.html: "START_PAGE~NAVBAR_AULA_LOCAL~ <div class=\"container\"\
     \ style=\"padding-top: 60px;\"> <h1>Editar Tarea</h1> <form method=\"post\"> <fieldset>\
     \ <legend>Tarea: Nueva</legend> Si no entiendes algo de aqu\xED, Abre el <a href=\"\
-    https://tech.eus/axis/link/M015.html\" target=\"_blank\" class=\"btn btn-warning\
-    \ btn-sm\">Manual de Tareas</a> <div> <label for=\"tipo_tarea\" class=\"form-label\
-    \ mt-4\">Tipo</label> <input type=\"text\" class=\"form-control\" id=\"tipo_tarea\"\
-    \ name=\"tipo\" required placeholder=\"Introduce el tipo o categoria de la tarea\
-    \ (p.e. Cocina)\"> </div> <div> <label for=\"nombre_tarea\" class=\"form-label\
-    \ mt-4\">Nombre</label> <input type=\"text\" class=\"form-control\" id=\"nombre_tarea\"\
-    \ name=\"nombre\" required placeholder=\"Introduce el nombre de la tarea (p.e.\
-    \ Fregar los platos)\"> </div> <br> Dias de la semana en los que se elige un alumno\
-    \ <div class=\"form-check\"><input class=\"form-check-input\" type=\"checkbox\"\
-    \ value=\"1\" id=\"cw-1\" name=\"dow\"><label class=\"form-check-label\" for=\"\
-    cw-1\">Lunes</label></div> <div class=\"form-check\"><input class=\"form-check-input\"\
+    https://tech.eus/axis/link/localaxel/m_tareas.html\" target=\"_blank\" class=\"\
+    btn btn-warning btn-sm\">Manual de Tareas</a> <div> <label for=\"tipo_tarea\"\
+    \ class=\"form-label mt-4\">Tipo</label> <input type=\"text\" class=\"form-control\"\
+    \ id=\"tipo_tarea\" name=\"tipo\" required placeholder=\"Introduce el tipo o categoria\
+    \ de la tarea (p.e. Cocina)\"> </div> <div> <label for=\"nombre_tarea\" class=\"\
+    form-label mt-4\">Nombre</label> <input type=\"text\" class=\"form-control\" id=\"\
+    nombre_tarea\" name=\"nombre\" required placeholder=\"Introduce el nombre de la\
+    \ tarea (p.e. Fregar los platos)\"> </div> <br> Dias de la semana en los que se\
+    \ elige un alumno <div class=\"form-check\"><input class=\"form-check-input\"\
+    \ type=\"checkbox\" value=\"1\" id=\"cw-1\" name=\"dow\"><label class=\"form-check-label\"\
+    \ for=\"cw-1\">Lunes</label></div> <div class=\"form-check\"><input class=\"form-check-input\"\
     \ type=\"checkbox\" value=\"2\" id=\"cw-2\" name=\"dow\"><label class=\"form-check-label\"\
     \ for=\"cw-2\">Martes</label></div> <div class=\"form-check\"><input class=\"\
     form-check-input\" type=\"checkbox\" value=\"3\" id=\"cw-3\" name=\"dow\"><label\
@@ -215,7 +215,59 @@ TEMPLATES:
     \ placeholder=\"Configurado en config.yaml\"> <button class=\"btn btn-primary\"\
     \ type=\"submit\" id=\"button-addon2\">Ir</button> </div> </fieldset> </form>\
     \ </div> </div> <a class=\"card text-white bg-primary mb-3 p-3 m-2\" style=\"\
-    width: 25rem; text-decoration: none;\" href=\"/\"> <div class=\"card-body\"> <h4\
-    \ class=\"card-title\">Axel Smart</h4> <p class=\"card-text\">Multiples aplicaci\xF3\
-    nes para crear tu propia IA.<br>Por el momento no esta disponible.</p> </div>\
-    \ </a> </div> </div> ~END_PAGE"
+    width: 25rem; text-decoration: none;\" href=\"/smart\"> <div class=\"card-body\"\
+    > <h4 class=\"card-title\">Axel Smart</h4> <p class=\"card-text\">Multiples aplicaci\xF3\
+    nes para crear tu propia IA.<br>\xA1Funciona! (beta)</p> </div> </a> </div> </div>\
+    \ ~END_PAGE"
+  smart/NAVBAR_SMART.html: <nav class="navbar navbar-expand-lg bg-primary" data-bs-theme="dark">
+    <div class="container"> <a class="navbar-brand" href="/smart">Axel Smart</a> <button
+    class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarColor01"
+    aria-controls="navbarColor01" aria-expanded="false" aria-label="Toggle navigation">
+    <span class="navbar-toggler-icon"></span> </button> <div class="collapse navbar-collapse"
+    id="navbarColor01"> <ul class="navbar-nav me-auto"> <li class="nav-item"> <a class="nav-link"
+    href="/smart">Smarts</a> </li> </ul> <div class="d-flex"> <a class="btn btn-secondary
+    my-2 my-sm-0" href="/">Volver a inicio</a> </div> </div> </div> </nav>
+  smart/index.html: 'START_PAGE~NAVBAR_SMART~ <div class="container" style="padding-top:
+    60px;"> <h1>Lista de Smarts</h1> <table class="table table-hover"> <thead> <tr
+    class="table-success"> <th scope="col">Nombre</th> <th scope="col">Detalles</th>
+    </tr> </thead> <tbody> <tr> <th colspan="2"><a href="/smart/new">Crear Smart</a></th>
+    </tr> ~LISTA_SMARTS~ </tbody> </table> </div> ~END_PAGE'
+  smart/new.html: 'START_PAGE~NAVBAR_SMART~ <div class="container" style="padding-top:
+    60px;"> <h1>Crear un Smart</h1> <table class="table table-hover"> <thead> <tr
+    class="table-success"> <th scope="col">Tipo</th> <th scope="col">Detalles</th>
+    </tr> </thead> <tbody> <tr> <td><a href="/smart/new/atajo">Crear Atajo</a></td>
+    <td>Un atajo es un comando que se ejecuta haciendo click en el.</td> </tr> <tr>
+    <td><a href="/smart/new/rutina">Crear Rutina</a></td> <td>Una rutina es un comando
+    que se ejecuta periodicamente.</td> </tr> <tr> <td><a href="/smart/new/aviso">Crear
+    Aviso</a></td> <td>Un aviso es un comando que se ejecuta al ocurrir un evento.</td>
+    </tr> <tr> <td><a href="/smart/new/aviso">Crear Aviso</a></td> <td>Un aviso es
+    un comando que se ejecuta al ocurrir un evento.</td> </tr> </tbody> </table> </div>
+    ~END_PAGE'
+  smart/new/aviso.html: "START_PAGE~NAVBAR_SMART~ <div class=\"container\" style=\"\
+    padding-top: 60px\"> <h1>Crear un Smart: Aviso</h1> <form method=\"post\"> <fieldset>\
+    \ <legend>Nuevo Aviso</legend> Si no entiendes algo de aqu\xED, Abre el <a href=\"\
+    https://tech.eus/axis/link/localaxel/m_smart.html\" target=\"_blank\" class=\"\
+    btn btn-warning btn-sm\">Manual de Smarts</a> <div> <label for=\"nombre_smart\"\
+    \ class=\"form-label mt-4\">Nombre</label> <input type=\"text\" class=\"form-control\"\
+    \ id=\"nombre_smart\" name=\"nombre\" required placeholder=\"Introduce el nombre\
+    \ del smart\"> </div> <div> <h4>Cuando</h4> <label for=\"seccion\" class=\"form-label\
+    \ mt-4\">Cuando... </label><select type=\"text\" class=\"form-control\" id=\"\
+    evento\" name=\"evento\" required> <option value selected disabled>Elige</option>\
+    \ <optgroup label=\"Menu Comedor\"> <option value=\"aa_menucomedor;today\"> hay\
+    \ comedor, dime lo que hay </option> <option value=\"aa_menucomedor;contains\"\
+    > hay {alergeno} en el menu del comedor </option> </optgroup> <optgroup label=\"\
+    Axel Aula\"> <option value=\"aa_tasks;today\"> en {aula} le toca una tarea a {alumno}\
+    \ </option> </optgroup> </select> <br><label for=\"valx\" class=\"form-label mt-4\"\
+    >Selector 1</label> <select type=\"text\" class=\"form-control\" id=\"valx\" name=\"\
+    sel_evento\" required> ~SMART_SELECTOR~ </select> <br> <label for=\"valy\" class=\"\
+    form-label mt-4\">Selector 2</label> <select type=\"text\" class=\"form-control\"\
+    \ id=\"valy\" name=\"sel_evento\" required> ~SMART_SELECTOR~ </select> </div>\
+    \ <div> <h4>Hacer</h4> <label for=\"hacer\" class=\"form-label mt-4\">Hacer...\
+    \ </label><select type=\"text\" class=\"form-control\" id=\"hacer\" name=\"hacer\"\
+    \ required> <option value selected disabled>Elige</option> <optgroup label=\"\
+    HTTP\"> <option value=\"http_get\"> HTTP Get </option> </optgroup> <optgroup label=\"\
+    Notificaci\xF3nes\"> <option value=\"ntfy\"> Ntfy.sh </option> </optgroup> </select>\
+    \ <br><label for=\"valz\" class=\"form-label mt-4\">Valor</label> <input type=\"\
+    text\" class=\"form-control\" id=\"valz\" name=\"val_hacer\" required> </div>\
+    \ <br> <button type=\"submit\" class=\"btn btn-primary\">Guardar</button> </fieldset>\
+    \ </form> </div> ~END_PAGE"

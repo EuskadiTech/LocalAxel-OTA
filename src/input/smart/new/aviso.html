@@ -1,0 +1,69 @@
+START_PAGE~NAVBAR_SMART~
+<div class="container" style="padding-top: 60px">
+    <h1>Crear un Smart: Aviso</h1>
+    <form method="post">
+        <fieldset>
+            <legend>Nuevo Aviso</legend>
+            Si no entiendes algo de aquí, Abre el
+            <a href="https://tech.eus/axis/link/localaxel/m_smart.html" target="_blank"
+                class="btn btn-warning btn-sm">Manual de Smarts</a>
+            <div>
+                <label for="nombre_smart" class="form-label mt-4">Nombre</label>
+                <input type="text" class="form-control" id="nombre_smart" name="nombre" required
+                    placeholder="Introduce el nombre del smart" />
+            </div>
+            <div>
+                <h4>Cuando</h4>
+                <label for="seccion" class="form-label mt-4">Cuando... </label><select type="text" class="form-control"
+                    id="evento" name="evento" required>
+                    <option value="" selected disabled>Elige</option>
+                    <optgroup label="Menu Comedor">
+                        <option value="aa_menucomedor;today">
+                            hay comedor, dime lo que hay
+                        </option>
+                        <option value="aa_menucomedor;contains">
+                            hay {alergeno} en el menu del comedor
+                        </option>
+                    </optgroup>
+                    <optgroup label="Axel Aula">
+                        <option value="aa_tasks;today">
+                            en {aula} le toca una tarea a {alumno}
+                        </option>
+                    </optgroup>
+                </select>
+                <br /><label for="valx" class="form-label mt-4">Selector 1</label>
+                <select type="text" class="form-control" id="valx" name="sel_evento" required>
+                    ~SMART_SELECTOR~
+                </select>
+                <br />
+                <label for="valy" class="form-label mt-4">Selector 2</label>
+                <select type="text" class="form-control" id="valy" name="sel_evento" required>
+                    ~SMART_SELECTOR~
+                </select>
+            </div>
+
+            <div>
+                <h4>Hacer</h4>
+                <label for="hacer" class="form-label mt-4">Hacer... </label><select type="text" class="form-control"
+                    id="hacer" name="hacer" required>
+                    <option value="" selected disabled>Elige</option>
+                    <optgroup label="HTTP">
+                        <option value="http_get">
+                            HTTP Get
+                        </option>
+                    </optgroup>
+                    <optgroup label="Notificaciónes">
+                        <option value="ntfy">
+                            Ntfy.sh
+                        </option>
+                    </optgroup>
+                </select>
+                <br /><label for="valz" class="form-label mt-4">Valor</label>
+                <input type="text" class="form-control" id="valz" name="val_hacer" required>
+            </div>
+            <br />
+            <button type="submit" class="btn btn-primary">Guardar</button>
+        </fieldset>
+    </form>
+</div>
+~END_PAGE

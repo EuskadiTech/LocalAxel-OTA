@@ -4,7 +4,7 @@ from datetime import datetime
 from utils import requests, ota_updater
 import yaml
 from datetime import datetime, timedelta
-
+from os import environ
 def contar_dias_laborables(fecha_inicio: str, wd: list):
     hoy = datetime.now()
     desde_fecha = datetime.fromisoformat(fecha_inicio)
@@ -12,12 +12,14 @@ def contar_dias_laborables(fecha_inicio: str, wd: list):
     dias_laborables = sum(1 for i in range(desde_dia) if (desde_fecha + timedelta(days=i)).weekday() in wd)
     return dias_laborables
 
-config: dict = yaml.safe_load(open("config.yaml"))
-templates = yaml.safe_load(open("OTA_Files/templates.yaml"))
+root = environ.get("DATA_PATH", "")
+config: dict = yaml.safe_load(open(root+"config.yaml"))
+templates = yaml.safe_load(open(root+"OTA_Files/templates.yaml"))
 
-db_alumnos = db.getDb("db.alumnos.json")
-db_aulas = db.getDb("db.aulas.json")
-db_autotareas = db.getDb("db.autotareas.json")
+db_alumnos = db.getDb(root+ "db.alumnos.json")
+db_aulas = db.getDb(root+"db.aulas.json")
+db_autotareas = db.getDb(root+"db.autotareas.json")
+db_smarts = db.getDb(root+"db.smarts.json")
 
 app = Microdot()
 
@@ -93,49 +95,52 @@ def build_page(template_file: list, modo: str = "default", **kwargs):
         elif value == "NAVBAR_AULA":
             output.append("".join(build_page("aula/NAVBAR_AULA.html")))
             continue
+        elif value == "NAVBAR_SMART":
+            output.append("".join(build_page("smart/NAVBAR_SMART.html")))
+            continue
         elif value == "NAVBAR_ADMIN":
             output.append("".join(build_page("NAVBAR_ADMIN.html")))
             continue
         elif value == "LISTA_ALUMNOS":
             alumnos = db_alumnos.getByQuery({"aula": kwargs["aula"].upper()})
-            alumnos_output = [
+            list_output = [
                 f'<tr><th scope="row"><a href="alumnos/{alumno["id"]}">{alumno["nombre"]}</a></th><td>{alumno["correo"]}</td><td>{alumno["telefono"]}</td><td><a class="btn btn-primary" href="mailto:{alumno["correo"]}">Enviar Correo</a> <a class="btn btn-danger" href="alumnos/{alumno["id"]}/delete">Borrar</a></td></tr>'
                 for alumno in alumnos
             ]
-            output += alumnos_output
+            output += list_output
             continue
         elif value == "LISTA_TAREAS":
-            dow = ["", "Lunes", "Martes", "Miercoles", "Jueves", "Viernes", "Sabado", "Domingo"]
+            dias_de_la_semana = {"1": "Lunes", "2": "Martes", "3": "Miercoles", "4": "Jueves", "5": "Viernes", "6": "Sabado", "7": "Domingo"}
             tareas = db_autotareas.getByQuery({"aula": kwargs["aula"].upper()})
-            alumnos_output = [
-                f'<tr><th scope="row"><a href="tareas/{alumno["id"]}">{alumno["tipo"]}: {alumno["nombre"]}</a></td><td>{tareas_makehoy(alumno["id"])}</td><td>Alumnos: {", ".join(alumno["alumno"])}<br>Diferencia: {alumno["dif"]}<br>Dias de la semana: {", ".join([dow[d] for d in alumno["dow"])}</td><td><a class="btn btn-danger" href="tareas/{alumno["id"]}/delete">Borrar</a></td></tr>'
+            list_output = [
+                f'<tr><th scope="row"><a href="tareas/{alumno["id"]}">{alumno["tipo"]}: {alumno["nombre"]}</a></td><td>{tareas_makehoy(alumno["id"])}</td><td>Alumnos: {", ".join(alumno["alumno"])}<br>Diferencia: {alumno["dif"]}<br>Dias de la semana: {", ".join([dias_de_la_semana[d] for d in alumno["dow"]])}</td><td><a class="btn btn-danger" href="tareas/{alumno["id"]}/delete">Borrar</a></td></tr>'
                 for alumno in tareas
             ]
-            output += alumnos_output
+            output += list_output
             continue
         elif value == "LISTA_TAREAS_MIN":
             tareas = db_autotareas.getByQuery({"aula": kwargs["aula"].upper()})
-            alumnos_output = [
+            list_output = [
                 f'<tr><th scope="row"><a href="tareas/{alumno["id"]}">{alumno["tipo"]}: {alumno["nombre"]}</a></td><td>{tareas_makehoy(alumno["id"])}</td></tr>'
                 for alumno in tareas
             ]
-            output += alumnos_output
+            output += list_output
             continue
         elif value == "CHECK_ALUMNOS":
             alumnos = db_alumnos.getByQuery({"aula": kwargs["aula"].upper()})
-            alumnos_output = [
+            list_output = [
                 f'<div class="form-check"><input class="form-check-input" type="checkbox" value="{alumno["nombre"]}" id="cb-{alumno["id"]}" name="alumno"><label class="form-check-label" for="cb-{alumno["id"]}">{alumno["nombre"]}</label></div>'
                 for alumno in alumnos
             ]
-            output += alumnos_output
+            output += list_output
             continue
         elif value == "LISTA_AULAS":
             aulas = db_aulas.getAll()
-            alumnos_output = [
+            list_output = [
                 f'<tr><th scope="row"><a href="aula/{aula["codigo"]}">{aula["nombre"]}</a></th><td><a class="btn btn-danger" href="aula/{aula["id"]}/delete">Borrar</a></td></tr>'
                 for aula in aulas
             ]
-            output += alumnos_output
+            output += list_output
             continue
         elif value == "ALUMNO_NOMBRE":
             output.append(edit_alumno["nombre"])
@@ -167,6 +172,16 @@ def build_page(template_file: list, modo: str = "default", **kwargs):
                 for dia in kwargs["menu"]
             ]
             output += menu_output
+        elif value == "LISTA_SMARTS":
+            dias_de_la_semana = {"1": "Lunes", "2": "Martes", "3": "Miercoles", "4": "Jueves", "5": "Viernes", "6": "Sabado", "7": "Domingo"}
+            tipos_smart = {"atajo": "Atajo", "rutina": "Rutina", "aviso": "Aviso"}
+            smarts = db_smarts.getAll()
+            list_output = [
+                f'<tr><th scope="row"><a href="smart/s/{smart["id"]}">{tipos_smart[smart["tipo"]]}: {smart["nombre"]}</a></td><td><a class="btn btn-danger" href="smart/s/{smart["id"]}/delete">Borrar</a></td></tr>'
+                for smart in smarts
+            ]
+            output += list_output
+            continue
         else:
             output.append(value)
             continue
@@ -390,6 +405,15 @@ async def error__aula_code_used(req):
     return "".join(build_page("_error/aula_code_used.html")), HEADERS
 
 
+@app.get("/smart")
+async def smart__index(req):
+    return "".join(build_page("smart/index.html")), HEADERS
+@app.get("/smart/new")
+async def smart__new(req):
+    return "".join(build_page("smart/new.html")), HEADERS
+@app.get("/smart/new/aviso")
+async def smart__new(req):
+    return "".join(build_page("smart/new/aviso.html")), HEADERS
 
 if __name__ == "__main__":
     reload_comedor()

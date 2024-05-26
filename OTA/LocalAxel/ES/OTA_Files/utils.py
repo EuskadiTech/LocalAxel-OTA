@@ -3,13 +3,15 @@ try:
 except ModuleNotFoundError:
     import urequests as requests
 import yaml
+from os import environ
 
-config = yaml.safe_load(open("config.yaml"))
+root = environ.get("DATA_PATH", "")
+config = yaml.safe_load(open(root + "config.yaml"))
 
 
 def ota_file(file: str) -> None:
     result = requests.get(config["OTA_URL_Prefix"].format(file))
-    with open(file, "wb") as f:
+    with open(root + file, "wb") as f:
         f.write(result.content)
     return
 
