@@ -23,7 +23,7 @@ db_smarts = db.getDb(root+"db.smarts.json")
 
 app = Microdot()
 
-FOLDER_NAME = "OTA_Files"
+FOLDER_NAME = root+"OTA_Files"
 HEADERS = {"Content-Type": "text/html; charset=utf-8"}
 menu = {}
 
