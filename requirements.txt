@@ -1,0 +1,4 @@
+requests
+pysondb
+microdot
+pyyaml
