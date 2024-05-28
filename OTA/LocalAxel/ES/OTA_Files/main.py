@@ -9,7 +9,7 @@ def contar_dias_laborables(fecha_inicio: str, wd: list):
     hoy = datetime.now()
     desde_fecha = datetime.fromisoformat(fecha_inicio)
     desde_dia = (hoy - desde_fecha).days
-    dias_laborables = sum(1 for i in range(desde_dia) if (desde_fecha + timedelta(days=i)).weekday() in wd)
+    dias_laborables = sum(1 for i in range(desde_dia) if (desde_fecha + timedelta(days=i)).isoweekday() in wd)
     return dias_laborables
 
 root = environ.get("DATA_PATH", "")
