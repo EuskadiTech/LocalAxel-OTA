@@ -25,6 +25,7 @@ app = Microdot()
 
 FOLDER_NAME = root+"OTA_Files"
 HEADERS = {"Content-Type": "text/html; charset=utf-8"}
+BA_HEADERS = {"Content-Type": "application/json; charset=utf-8", "Access-Control-Allow-Origin": "*"}
 menu = {}
 
 
@@ -414,6 +415,48 @@ async def smart__new(req):
 @app.get("/smart/new/aviso")
 async def smart__new(req):
     return "".join(build_page("smart/new/aviso.html")), HEADERS
+
+########### BetterAPI
+def check_token(req):
+    if req.args.get("token") != config.get("BetterAPI_Token", "DE:AD:DE:AD:DE:AD"):
+        return True
+    return False
+def fix_ids(obj):
+    obj["id"] = str(obj["id"])
+    return obj
+@app.get("/better/v1/comedor")
+async def better_v1_comedor_get(req):
+    if check_token(req): return "401 Invalid Token", 401, BA_HEADERS
+    print("BetterAxel Request")
+    if req.args.get("cmd") == "list":
+        return menu, BA_HEADERS
+@app.get("/better/v1/alumno")
+async def better_v1_alumno_get(req):
+    if check_token(req): return "401 Invalid Token", 401, BA_HEADERS
+    print("BetterAxel Request")
+    if req.args.get("cmd") == "list":
+        return [fix_ids(a) for a in db_alumnos.getByQuery({"aula": db_aulas.getById(req.args.get("aulaid"))["codigo"].upper()})], BA_HEADERS
+    elif req.args.get("cmd") == "get":
+        return fix_ids(db_alumnos.getById(req.args.get("alumnoid"))), BA_HEADERS
+    elif req.args.get("cmd") == "delete":
+        db_alumnos.deleteById(int(req.args.get("alumnoid")))
+        return [], BA_HEADERS
+@app.get("/better/v1/aula")
+async def better_v1_aula_get(req):
+    if check_token(req): return "401 Invalid Token", 401, BA_HEADERS
+    print("BetterAxel Request")
+    if req.args.get("cmd") == "list":
+        return [fix_ids(a) for a in db_aulas.getAll()], BA_HEADERS
+    elif req.args.get("cmd") == "get":
+        return fix_ids(db_aulas.getById(req.args.get("aulaid"))), BA_HEADERS
+    elif req.args.get("cmd") == "delete":
+        db_aulas.deleteById(int(req.args.get("aulaid")))
+        return [], BA_HEADERS
+
+
+
+
+
 
 if __name__ == "__main__":
     reload_comedor()
