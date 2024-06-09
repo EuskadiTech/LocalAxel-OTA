@@ -452,8 +452,17 @@ async def better_v1_aula_get(req):
     elif req.args.get("cmd") == "delete":
         db_aulas.deleteById(int(req.args.get("aulaid")))
         return [], BA_HEADERS
-
-
+@app.get("/better/v1/tarea")
+async def better_v1_tarea_get(req):
+    if check_token(req): return "401 Invalid Token", 401, BA_HEADERS
+    dias_de_la_semana = {"1": "Lunes", "2": "Martes", "3": "Miercoles", "4": "Jueves", "5": "Viernes", "6": "Sabado", "7": "Domingo"}
+    if req.args.get("cmd") == "list":
+        tareas = db_autotareas.getByQuery({"aula": db_aulas.getById(req.args.get("aulaid"))["codigo"].upper()})
+        config = [
+            fix_ids({"id": alumno["id"], "tipo": alumno["tipo"], "nombre": alumno["nombre"], "hoy": tareas_makehoy(alumno["id"]), "alumnos": alumno["alumno"], "dif": alumno["dif"], "dow": alumno["dow"]})
+            for alumno in tareas
+        ]
+        return config, BA_HEADERS
 
 
 
